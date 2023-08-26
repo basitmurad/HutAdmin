@@ -6,4 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.DashboardActivity">
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log out"
+        android:id="@+id/btnlogout"
+
+        />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

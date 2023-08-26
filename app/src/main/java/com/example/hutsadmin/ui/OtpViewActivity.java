@@ -12,13 +12,17 @@ import android.widget.Toast;
 
 import com.example.hutsadmin.R;
 import com.example.hutsadmin.databinding.ActivityOtpViewBinding;
+import com.example.hutsadmin.models.Users;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.UUID;
 
@@ -30,29 +34,33 @@ public class OtpViewActivity extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private long totalTimeInMillis;
     private long intervalInMillis;
-    private String verificatonID, number, randomUUId, email, name , password;
+    private String verificatonID, number, userUId, email, name, password;
     private ProgressDialog progressDialog;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding  = ActivityOtpViewBinding.inflate(getLayoutInflater());
+        binding = ActivityOtpViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Signing in...");
         progressDialog.setMessage("Please wait..");
         progressDialog.setCancelable(false);
 
-//        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
 
         verificatonID = getIntent().getStringExtra("verificationID");
         number = getIntent().getStringExtra("number");
         name = getIntent().getStringExtra("name");
         email = getIntent().getStringExtra("email");
         password = getIntent().getStringExtra("password");
+        userUId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        randomUUId = UUID.randomUUID().toString();
-        Toast.makeText(this, ""+number + name + email + randomUUId, Toast.LENGTH_SHORT).show();
+
+//        Toast.makeText(this, ""+number + name + email + randomUUId, Toast.LENGTH_SHORT).show();
 
 
         binding.textNumber.setText(name);
@@ -100,7 +108,7 @@ public class OtpViewActivity extends AppCompatActivity {
 
                                         progressDialog.show();
 
-//                                        SendDataToFireBase();
+                                        SendDataToFireBase();
                                     } else {
                                         Toast.makeText(OtpViewActivity.this, "Invalid Otp", Toast.LENGTH_SHORT).show();
                                     }
@@ -108,8 +116,7 @@ public class OtpViewActivity extends AppCompatActivity {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(OtpViewActivity.this, "Exception" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(OtpViewActivity.this, "Exception" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(OtpViewActivity.this, "Exception failure" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
                                 }
                             });
@@ -119,32 +126,33 @@ public class OtpViewActivity extends AppCompatActivity {
         });
     }
 
-//    private void SendDataToFireBase() {
-//        Users users = new Users(name,email, number, password ,randomUUId);
-//        databaseRef.child("usersDetail").child("randomUUId").setValue(users)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void unused) {
-//
-//                        progressDialog.dismiss();
-//                        Intent intent = new Intent(OtpViewActivity.this, DashboardActivity.class);
-//
-//
-//                        startActivity(intent);
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(OtpViewActivity.this, "Try Again...\n something went wrong", Toast.LENGTH_SHORT).show();
-//
-//                        Toast.makeText(OtpViewActivity.this, ""+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//
-//    }
+    //
+    private void SendDataToFireBase() {
+        Users users = new Users(name, email, number, password, userUId);
+        databaseReference.child("AdminDetail").child(userUId).setValue(users)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                        progressDialog.dismiss();
+                        Intent intent = new Intent(OtpViewActivity.this, DashboardActivity.class);
+
+
+                        startActivity(intent);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(OtpViewActivity.this, "Try Again...\n something went wrong", Toast.LENGTH_SHORT).show();
+
+                        Toast.makeText(OtpViewActivity.this, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+    }
 
     private void StartCounter() {
         countDownTimer = new CountDownTimer(totalTimeInMillis, intervalInMillis) {
