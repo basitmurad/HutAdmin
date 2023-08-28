@@ -1,5 +1,7 @@
 package com.example.hutsadmin.ui;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +29,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +37,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private ActivityRegistrationBinding binding;
     private ProgressDialog progressDialog;
-    private String email, password, number, name, userUId;
+    private String email, password, number, name, userUId,adminFcmToken ;
     private FirebaseAuth firebaseAuth;
     private SessionManager sessionManager;
     private DatabaseReference databaseReference;
@@ -50,6 +53,7 @@ public class RegistrationActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
+        fcmToken();
         binding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +69,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
     }
+
 
 
     private void CheckValidations() {
@@ -162,8 +167,8 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void SendDataToFireBase() {
-        Users users = new Users(name, email, number, password, userUId);
-        databaseReference.child("AdminDetail").child(userUId).setValue(users)
+        Users users = new Users(name, email, number, password, userUId,adminFcmToken);
+            databaseReference.child("AdminDetail").child(userUId).setValue(users)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -186,6 +191,25 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
 
 
+    }
+    private void fcmToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                        return;
+                    }
+
+                    // Get the FCM token
+                    adminFcmToken = task.getResult();
+                    sessionManager.setAdminFcmToken(adminFcmToken);
+
+                    // Now you have the FCM token for the admin app
+                    Log.d(TAG, "token" + adminFcmToken);
+                    Log.d("toeken" , adminFcmToken);
+                    Toast.makeText(this, ""+adminFcmToken, Toast.LENGTH_SHORT).show();
+                    // Save the FCM token to your server or preferences if needed
+                });
     }
 
 }

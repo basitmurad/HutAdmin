@@ -108,7 +108,7 @@ public class OtpViewActivity extends AppCompatActivity {
 
                                         progressDialog.show();
 
-                                        SendDataToFireBase();
+//                                        SendDataToFireBase();
                                     } else {
                                         Toast.makeText(OtpViewActivity.this, "Invalid Otp", Toast.LENGTH_SHORT).show();
                                     }
@@ -127,32 +127,32 @@ public class OtpViewActivity extends AppCompatActivity {
     }
 
     //
-    private void SendDataToFireBase() {
-        Users users = new Users(name, email, number, password, userUId);
-        databaseReference.child("AdminDetail").child(userUId).setValue(users)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-
-                        progressDialog.dismiss();
-                        Intent intent = new Intent(OtpViewActivity.this, DashboardActivity.class);
-
-
-                        startActivity(intent);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(OtpViewActivity.this, "Try Again...\n something went wrong", Toast.LENGTH_SHORT).show();
-
-                        Toast.makeText(OtpViewActivity.this, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-    }
+//    private void SendDataToFireBase() {
+////        Users users = new Users(name, email, number, password, userUId);
+//        databaseReference.child("AdminDetail").child(userUId).setValue(users)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void unused) {
+//
+//                        progressDialog.dismiss();
+//                        Intent intent = new Intent(OtpViewActivity.this, DashboardActivity.class);
+//
+//
+//                        startActivity(intent);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        progressDialog.dismiss();
+//                        Toast.makeText(OtpViewActivity.this, "Try Again...\n something went wrong", Toast.LENGTH_SHORT).show();
+//
+//                        Toast.makeText(OtpViewActivity.this, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//
+//
+//    }
 
     private void StartCounter() {
         countDownTimer = new CountDownTimer(totalTimeInMillis, intervalInMillis) {

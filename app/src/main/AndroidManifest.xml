@@ -2,11 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.Reciever" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
-
-
         android:allowBackup="true"
-
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -16,25 +18,37 @@
         android:theme="@style/Theme.HutsAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".ui.DashboardActivity"
-            android:exported="true"
-            android:theme="@style/Custom.Theme.Huts">
+            android:name=".ui.Main2Activity"
+            android:exported="true" >
 
         </activity>
 
+        <service android:name=".messeges.MessegeClass"
+            android:permission="com.google.android.c2dm.permission.Send"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="om.google.android.c2dm.intent.Recieve"/>
+            </intent-filter>
+        </service>
 
+
+        <activity
+            android:name=".ui.DashboardActivity"
+            android:exported="true"
+            android:theme="@style/Custom.Theme.Huts"></activity>
         <activity
             android:name=".ui.OtpViewActivity"
             android:exported="false"
-            android:theme="@style/Custom.Theme.Huts"/>
+            android:theme="@style/Custom.Theme.Huts" />
         <activity
             android:name=".ui.RegistrationActivity"
             android:exported="false"
-            android:theme="@style/Custom.Theme.Huts"/>
+            android:theme="@style/Custom.Theme.Huts" />
         <activity
             android:name=".ui.LoginActivity"
             android:exported="false"
-            android:theme="@style/Custom.Theme.Huts"/>
+            android:theme="@style/Custom.Theme.Huts" />
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true"
@@ -49,9 +63,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Custom.Theme.Huts">
-
-        </activity>
+            android:theme="@style/Custom.Theme.Huts"></activity>
 
         <meta-data
             android:name="preloaded_fonts"

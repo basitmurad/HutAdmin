@@ -81,76 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         progressDialog.show();
-//        databaseReference.orderByChild("email").equalTo(email)
-//                .addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        progressDialog.dismiss();
-//                        if (snapshot.exists()) {
-//                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                                String storedPassword = dataSnapshot.child("password").getValue(String.class);
-//                                if (password.equals(storedPassword)) {
-//                                    // Email and password are correct
-//                                    // Proceed to DashboardActivity or other actions
-//
-//                                    // Mark the user as logged in
-//                                    dataSnapshot.getRef().child("loggedIn").setValue(true);
-//
-//                                    sessionManager.setLoggedIn(true);
-//                                    startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-//                                    finish();
-//                                } else {
-//                                    // Password is incorrect
-//                                    Toast.makeText(LoginActivity.this, "Incorrect password.", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        } else {
-//                            // Email not found in the database
-//                            Toast.makeText(LoginActivity.this, "Email not found.", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(LoginActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-        // Retrieve user data from the database based on the entered email
-//        databaseReference.orderByChild("email").equalTo(email)
-//                .addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        progressDialog.dismiss();
-//                        if (snapshot.exists()) {
-//                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                                String storedPassword = dataSnapshot.child("password").getValue(String.class);
-//                                if (password.equals(storedPassword)) {
-//                                    // Email and password are correct
-//                                    // Proceed to DashboardActivity or other actions
-//
-//
-//
-//                                    sessionManager.setLoggedIn(true);
-//                                    startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-//                                    finish();
-//                                } else {
-//                                    // Password is incorrect
-//                                    Toast.makeText(LoginActivity.this, "Incorrect password.", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//                        } else {
-//                            // Email not found in the database
-//                            Toast.makeText(LoginActivity.this, "Email not found.", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        progressDialog.dismiss();
-//                        Toast.makeText(LoginActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+
 
 
 
@@ -166,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(new Intent(LoginActivity.this,DashboardActivity.class));
 
                     }else{
+                        progressDialog.dismiss();
                         Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(e -> {

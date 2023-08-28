@@ -27,64 +27,27 @@ public class SplashActivity extends AppCompatActivity {
         binding  = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (firebaseUser==null)
+                {
+                    startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+                }
+                else {
+                    startActivity(new Intent(SplashActivity.this,DashboardActivity.class));
 
-        sessionManager = new SessionManager(this);
-
-
-        if (sessionManager.isLoggedIn())
-        {
-            startActivity(new Intent(SplashActivity.this,DashboardActivity.class));
-        }
-        else {
-            startActivity(new Intent(SplashActivity.this,LoginActivity.class));
-        }
-
-
-
-
-//        // Check if the user is logged in
-//        if (sessionManager.isLoggedIn()) {
-//            // User is logged in, proceed to DashboardActivity
-//            startActivity(new Intent(this, DashboardActivity.class));
-//        } else {
-//            // User is not logged in, proceed to LoginActivity
-//            startActivity(new Intent(this, LoginActivity.class));
-//        }
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-//
-//        Toast.makeText(this, ""+firebaseUser, Toast.LENGTH_SHORT).show();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (currentUser==null)
-//                {
-//                    startActivity(new Intent(SplashActivity.this,LoginActivity.class));
-//                }
-//                else {
-//                    startActivity(new Intent(SplashActivity.this,DashboardActivity.class));
-//
-//                }
-//            }
-//        },700);
+                }
+            }
+        },700);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (firebaseUser==null)
-//                {
-//                    startActivity(new Intent(SplashActivity.this,LoginActivity.class));
-//                }
-//                else {
-//                    startActivity(new Intent(SplashActivity.this,DashboardActivity.class));
-//
-//                }
-//            }
-//        },700);
+
     }
 }
