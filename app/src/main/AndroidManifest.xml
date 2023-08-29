@@ -18,25 +18,28 @@
         android:theme="@style/Theme.HutsAdmin"
         tools:targetApi="31">
         <activity
-            android:name=".ui.Main2Activity"
-            android:exported="true" >
+            android:name=".ui.CancelOrdersDetailActivity"
+            android:exported="false"
+            android:theme="@style/Custom.Theme.Huts"/>
+        <activity
+            android:name=".ui.DetailsActivity"
+            android:exported="false"
+            android:theme="@style/Custom.Theme.Huts" />
 
-        </activity>
-
-        <service android:name=".messeges.MessegeClass"
-            android:permission="com.google.android.c2dm.permission.Send"
-            android:exported="true">
+        <service
+            android:name=".messeges.MessegeClass"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.Send">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-                <action android:name="om.google.android.c2dm.intent.Recieve"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="om.google.android.c2dm.intent.Recieve" />
             </intent-filter>
         </service>
-
 
         <activity
             android:name=".ui.DashboardActivity"
             android:exported="true"
-            android:theme="@style/Custom.Theme.Huts"></activity>
+            android:theme="@style/Custom.Theme.Huts" />
         <activity
             android:name=".ui.OtpViewActivity"
             android:exported="false"
@@ -58,12 +61,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Custom.Theme.Huts"></activity>
+            android:theme="@style/Custom.Theme.Huts" />
 
         <meta-data
             android:name="preloaded_fonts"
