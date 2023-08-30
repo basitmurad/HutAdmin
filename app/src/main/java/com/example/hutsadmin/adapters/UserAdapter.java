@@ -15,6 +15,7 @@ import com.example.hutsadmin.R;
 import com.example.hutsadmin.databinding.UserLayoutBinding;
 import com.example.hutsadmin.models.UsersDetail;
 import com.example.hutsadmin.ui.CancelOrdersDetailActivity;
+import com.example.hutsadmin.ui.DeliveredOrdersActivity;
 import com.example.hutsadmin.ui.DetailsActivity;
 
 import java.util.ArrayList;
@@ -65,6 +66,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
                 if (tabIdentifier==2)
                 {
                     Intent intent = new Intent(context, CancelOrdersDetailActivity.class);
+                    intent.putExtra("userId", userId);
+                    intent.putExtra("name" , name);
+                    context.startActivity(intent);
+                }
+                if (tabIdentifier==3)
+                {
+                    Intent intent = new Intent(context, DeliveredOrdersActivity.class);
                     intent.putExtra("userId", userId);
                     intent.putExtra("name" , name);
                     context.startActivity(intent);

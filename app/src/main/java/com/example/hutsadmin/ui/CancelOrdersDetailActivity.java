@@ -6,13 +6,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
-import com.example.hutsadmin.R;
 import com.example.hutsadmin.databinding.ActivityCancelOrdersDetailBinding;
-import com.example.hutsadmin.fragments.adapters.CancelAdapter;
+import com.example.hutsadmin.fragments.adapters.CancelAdpter;
 import com.example.hutsadmin.models.OrderData;
-import com.google.android.gms.common.FirstPartyScopes;
+import com.example.hutsadmin.models.OrderDetails;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,9 +26,13 @@ import java.util.ArrayList;
 public class CancelOrdersDetailActivity extends AppCompatActivity {
 
     private ActivityCancelOrdersDetailBinding binding;
-    private DatabaseReference cancelOrdersRef;
-    private ArrayList<OrderData> cancelOrdersList;
-    private CancelAdapter cancelAdapter;
+    private ArrayList<OrderData> activeOrdersList = new ArrayList<>();
+    private ArrayList<OrderDetails> orderDetailsArrayList = new ArrayList<>();
+
+    private DatabaseReference ordersRef;
+
+    private CancelAdpter cancelAdpter;
+
     private ProgressDialog progressDialog;
     @Override
 
@@ -42,64 +48,124 @@ public class CancelOrdersDetailActivity extends AppCompatActivity {
 
         String userId = getIntent().getStringExtra("userId");
         String name = getIntent().getStringExtra("name");
-//        Toast.makeText(this, "" + userId  + name, Toast.LENGTH_SHORT).show();
+
 
         binding.textView7.setText(name);
+        binding.count.setText("0");
+
+        ordersRef = FirebaseDatabase.getInstance().getReference("CancelOrders").child(userId);
 
 
-        cancelOrdersRef = FirebaseDatabase.getInstance().getReference("CancelOrders").child(userId);
+        activeOrdersList = new ArrayList<>();
+        orderDetailsArrayList   =new ArrayList<>();
 
-        cancelOrdersList = new ArrayList<>();
 
-        cancelOrdersRef.addValueEventListener(new ValueEventListener() {
+        ordersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 if (snapshot.exists())
                 {
-                    cancelOrdersList.clear();
+                    activeOrdersList.clear();
+                    orderDetailsArrayList.clear();
 
+                    progressDialog.dismiss();
+                    Toast.makeText(CancelOrdersDetailActivity.this, "data is exist", Toast.LENGTH_SHORT).show();
 
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                    for (DataSnapshot snapshot1 :snapshot.getChildren())
                     {
-                        OrderData orderData = dataSnapshot.getValue(OrderData.class);
 
-                        cancelOrdersList.add(orderData);
+                        OrderData orderData = snapshot1.getValue(OrderData.class);
+                        activeOrdersList.add(orderData);
                     }
 
 
-                    cancelAdapter = new CancelAdapter(CancelOrdersDetailActivity.this, cancelOrdersList);
-                    binding.cancelRecycerl.setAdapter(cancelAdapter);
+                    cancelAdpter = new CancelAdpter(CancelOrdersDetailActivity.this,activeOrdersList);
+                    binding.cancelRecycerl.setAdapter(cancelAdpter);
                     binding.cancelRecycerl.setLayoutManager(new LinearLayoutManager(CancelOrdersDetailActivity.this));
+                    cancelAdpter.notifyDataSetChanged();
 
-                    int itemCount = cancelOrdersList.size();
-
+                    int itemCount = activeOrdersList.size();
                     binding.count.setText(String.valueOf(itemCount));
-                    progressDialog.dismiss();
-                    progressDialog.dismiss();
-//                    Toast.makeText(CancelOrdersDetailActivity.this, "exist", Toast.LENGTH_SHORT).show();
+//
                 }
                 else {
-
-                    Toast.makeText(CancelOrdersDetailActivity.this, "No Cancel order ", Toast.LENGTH_SHORT).show();
-
-                }
-
-                if (cancelOrdersList.isEmpty())
-                {
                     progressDialog.dismiss();
-                    binding.count.setText("0");
-                }
 
-                // Now you have the list of cancel orders for the user, you can display it
+
+                    Toast.makeText(CancelOrdersDetailActivity.this, " no data", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-                // Handle error
-                Toast.makeText(CancelOrdersDetailActivity.this, "error " +error.getMessage(), Toast.LENGTH_SHORT).show();
-
+                progressDialog.dismiss();
+                Log.d("Exception" , "error");
             }
         });
+
+        binding.imageView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+//
+//
+//        cancelOrdersRef = FirebaseDatabase.getInstance().getReference("CancelOrders").child(userId);
+//
+//        cancelOrdersList = new ArrayList<>();
+//
+//        cancelOrdersRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.exists())
+//                {
+//                    cancelOrdersList.clear();
+//
+//
+//                    for (DataSnapshot dataSnapshot : snapshot.getChildren())
+//                    {
+//                        OrderData orderData = dataSnapshot.getValue(OrderData.class);
+//
+//                        cancelOrdersList.add(orderData);
+//                    }
+//
+//
+//                    cancelAdapter = new CancelAdapter(CancelOrdersDetailActivity.this, cancelOrdersList);
+//                    binding.cancelRecycerl.setAdapter(cancelAdapter);
+//                    binding.cancelRecycerl.setLayoutManager(new LinearLayoutManager(CancelOrdersDetailActivity.this));
+//
+//                    int itemCount = cancelOrdersList.size();
+//
+//                    binding.count.setText(String.valueOf(itemCount));
+//                    progressDialog.dismiss();
+//                    progressDialog.dismiss();
+////                    Toast.makeText(CancelOrdersDetailActivity.this, "exist", Toast.LENGTH_SHORT).show();
+//                }
+//                else {
+//
+//                    Toast.makeText(CancelOrdersDetailActivity.this, "No Cancel order ", Toast.LENGTH_SHORT).show();
+//
+//                }
+//
+//                if (cancelOrdersList.isEmpty())
+//                {
+//                    progressDialog.dismiss();
+//                    binding.count.setText("0");
+//                }
+//
+//                // Now you have the list of cancel orders for the user, you can display it
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                // Handle error
+//                Toast.makeText(CancelOrdersDetailActivity.this, "error " +error.getMessage(), Toast.LENGTH_SHORT).show();
+//
+//            }
+//        });
     }
 }

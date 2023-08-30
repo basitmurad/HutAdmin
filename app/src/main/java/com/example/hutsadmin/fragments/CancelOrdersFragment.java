@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.hutsadmin.R;
@@ -31,6 +32,9 @@ public class CancelOrdersFragment extends Fragment {
     private ArrayList<UsersDetail> usersDetailArrayList;
     private RecyclerView recyclerView;
     private ProgressDialog progressDialog;
+    private ArrayList<UsersDetail> filteredArraylist;
+    private SearchView searchView;
+    private UserAdapter userAdapter;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -41,6 +45,7 @@ public class CancelOrdersFragment extends Fragment {
 
 
         recyclerView = view.findViewById(R.id.userRecycler1);
+        searchView = view.findViewById(R.id.serachView123);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Fetching user.....");
         progressDialog.setTitle("Please wait");
@@ -51,6 +56,7 @@ public class CancelOrdersFragment extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference("UsersDetail");
 
         usersDetailArrayList = new ArrayList<>();
+        filteredArraylist = new ArrayList<>();
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -60,9 +66,10 @@ public class CancelOrdersFragment extends Fragment {
                         UsersDetail usersDetail = dataSnapshot.getValue(UsersDetail.class);
                         usersDetailArrayList.add(usersDetail);
 
+
                     }
 
-                    UserAdapter userAdapter = new UserAdapter(getContext(), usersDetailArrayList, 2);
+                     userAdapter = new UserAdapter(getContext(), usersDetailArrayList, 2);
 
                     recyclerView.setAdapter(userAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
@@ -76,10 +83,6 @@ public class CancelOrdersFragment extends Fragment {
                 }
 
 
-
-
-
-
             }
 
             @Override
@@ -88,8 +91,37 @@ public class CancelOrdersFragment extends Fragment {
                 Toast.makeText(getActivity(), "database error" + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
+        setupSearchView();
 
         return view;
+    }
+
+    private void setupSearchView() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterUsers(newText); // Call method to filter users
+                return true;
+            }
+        });
+    }
+
+    private void filterUsers(String query) {
+
+        filteredArraylist.clear();
+        for (UsersDetail user : usersDetailArrayList) {
+            if (user.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredArraylist.add(user);
+            }
+        }
+
+
+        userAdapter.setUsersDetailArrayList(filteredArraylist);
+
     }
 }

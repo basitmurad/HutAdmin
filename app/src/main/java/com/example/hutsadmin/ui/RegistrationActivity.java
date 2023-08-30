@@ -98,47 +98,7 @@ public class RegistrationActivity extends AppCompatActivity {
             createAccountWithEmailAndPassword(email, password);
 
 
-//            PhoneAuthProvider.getInstance().verifyPhoneNumber("+92" + number,
-//                    60l,
-//                    TimeUnit.SECONDS, RegistrationActivity.this,
-//                    new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-//                        @Override
-//                        public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-//
-//
-//                        }
-//
-//                        @Override
-//                        public void onVerificationFailed(@NonNull FirebaseException e) {
-//
-//                            Log.d("Exception", e.getMessage());
-//                            Toast.makeText(RegistrationActivity.this, "error" + e.getMessage(), Toast.LENGTH_SHORT).show();
-//                            progressDialog.dismiss();
-//                        }
-//
-//                        @Override
-//                        public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-//
-//
-//                            progressDialog.dismiss();
-//
-//                            Intent intent = new Intent(RegistrationActivity.this, OtpViewActivity.class);
-//                            intent.putExtra("verificationID", s);
-//                            intent.putExtra("number", "+92" + number);
-//                            intent.putExtra("email", email);
-//                            intent.putExtra("name", name);
-//                            intent.putExtra("password", password);
-//
-////                            sessionManager.saveCredentials(name
-////                                    ,password,email,number
-////                            );
-//
-//
-//                            startActivity(intent);
-//
-//
-//                        }
-            //      });
+
 
         }
     }
@@ -207,7 +167,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     // Now you have the FCM token for the admin app
                     Log.d(TAG, "token" + adminFcmToken);
                     Log.d("toeken" , adminFcmToken);
-                    Toast.makeText(this, ""+adminFcmToken, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, ""+adminFcmToken, Toast.LENGTH_SHORT).show();
                     // Save the FCM token to your server or preferences if needed
                 });
     }

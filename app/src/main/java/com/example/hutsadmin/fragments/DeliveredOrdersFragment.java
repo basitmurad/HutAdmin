@@ -2,7 +2,6 @@ package com.example.hutsadmin.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.bluetooth.BluetoothAssignedNumbers;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -28,28 +27,23 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-
-public class ActiveOrdersFragment extends Fragment {
-
-
+public class DeliveredOrdersFragment extends Fragment {
     private DatabaseReference databaseReference;
     private ArrayList<UsersDetail> usersDetailArrayList;
-    private ArrayList<UsersDetail> filteredArraylist;
     private RecyclerView recyclerView;
     private ProgressDialog progressDialog;
+    private ArrayList<UsersDetail> filteredArraylist;
     private SearchView searchView;
     private UserAdapter userAdapter;
-
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_active_orders, container, false);
+        View view =  inflater.inflate(R.layout.fragment_delivered_orders, container, false);
 
-        recyclerView = view.findViewById(R.id.userRecycler);
-        searchView = view.findViewById(R.id.serachView);
-
+        recyclerView = view.findViewById(R.id.userRecycler13);
+        searchView = view.findViewById(R.id.serachView12334);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Fetching user.....");
         progressDialog.setTitle("Please wait");
@@ -57,10 +51,10 @@ public class ActiveOrdersFragment extends Fragment {
         progressDialog.show();
 
 
+        databaseReference = FirebaseDatabase.getInstance().getReference("UsersDetail");
 
         usersDetailArrayList = new ArrayList<>();
         filteredArraylist = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference("UsersDetail");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -69,9 +63,11 @@ public class ActiveOrdersFragment extends Fragment {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         UsersDetail usersDetail = dataSnapshot.getValue(UsersDetail.class);
                         usersDetailArrayList.add(usersDetail);
+
+
                     }
 
-                     userAdapter = new UserAdapter(getContext(), usersDetailArrayList, 1);
+                    userAdapter = new UserAdapter(getContext(), usersDetailArrayList, 3);
 
                     recyclerView.setAdapter(userAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
@@ -80,24 +76,20 @@ public class ActiveOrdersFragment extends Fragment {
 
 
                 } else {
-
-                    Toast.makeText(getActivity(), "No user", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Toast.makeText(getActivity(), "no data", Toast.LENGTH_SHORT).show();
                 }
+
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-
+                progressDialog.dismiss(); // Dismiss the dialog on database error
                 Toast.makeText(getActivity(), "database error" + error.getMessage(), Toast.LENGTH_SHORT).show();
-
-
             }
         });
-
-
         setupSearchView();
-
         return view;
     }
 
@@ -124,7 +116,6 @@ public class ActiveOrdersFragment extends Fragment {
                 filteredArraylist.add(user);
             }
         }
-
 
 
         userAdapter.setUsersDetailArrayList(filteredArraylist);

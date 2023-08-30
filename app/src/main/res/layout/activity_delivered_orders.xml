@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.CancelOrdersDetailActivity">
+    tools:context=".ui.DeliveredOrdersActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -62,7 +62,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/inter"
                 android:paddingStart="15dp"
-                android:text="Cancel Orders are: "
+                android:text="Delivered Orders are: "
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -85,7 +85,7 @@
         android:id="@+id/cancelRecycerl"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-tools:listitem="@layout/cancelitem_layout"
+        tools:listitem="@layout/cancelitem_layout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 

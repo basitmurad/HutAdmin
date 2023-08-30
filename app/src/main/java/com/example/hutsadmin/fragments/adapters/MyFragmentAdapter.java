@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.hutsadmin.fragments.ActiveOrdersFragment;
 import com.example.hutsadmin.fragments.CancelOrdersFragment;
-import com.example.hutsadmin.fragments.DeliverFragment;
+import com.example.hutsadmin.fragments.DeliveredOrdersFragment;
 
 public class MyFragmentAdapter extends FragmentStateAdapter {
     public MyFragmentAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -23,7 +23,7 @@ public class MyFragmentAdapter extends FragmentStateAdapter {
             case 1:
                 return new CancelOrdersFragment();
             case 2:
-                return new DeliverFragment();
+                return new DeliveredOrdersFragment();
             default:
                 throw new IllegalArgumentException("Invalid tab position: " + position);
         }

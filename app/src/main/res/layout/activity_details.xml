@@ -61,7 +61,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/inter"
                 android:paddingStart="15dp"
-                android:text="Cancel Orders are: "
+                android:text="Active Orders are: "
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -71,7 +71,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="@font/inter"
-                android:text="10"
+                android:text="0"
+
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 tools:layout_editor_absoluteX="11dp"

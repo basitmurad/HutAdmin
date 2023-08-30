@@ -5,29 +5,25 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context=".fragments.ActiveOrdersFragment">
-
-
-
+    tools:context=".fragments.CancelOrdersFragment">
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/serachView"
+        android:id="@+id/serachView12334"
         android:background="@drawable/back_searchview"
-
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
 
         />
-
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/userRecycler"
-        android:layout_margin="3dp"
+        android:layout_height="wrap_content"
         tools:listitem="@layout/user_layout"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_margin="3dp"
+        android:id="@+id/userRecycler13"
+
+        />
 
 </LinearLayout>

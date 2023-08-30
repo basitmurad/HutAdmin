@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                    FirebaseUser user=     firebaseAuth.getCurrentUser();
 
 
-                        Toast.makeText(this, ""+user.getEmail() +" " +user.getUid(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(this, ""+user.getEmail() +" " +user.getUid(), Toast.LENGTH_SHORT).show();
 
                         startActivity(new Intent(LoginActivity.this,DashboardActivity.class));
 
@@ -106,5 +106,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
+    }
 }
