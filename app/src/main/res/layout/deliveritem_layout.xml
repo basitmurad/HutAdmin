@@ -22,7 +22,7 @@
             android:id="@+id/constraintLayout5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/backButton_color"
+            android:background="@color/backBar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -46,7 +46,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:padding="5dp"
-                    app:layout_constraintEnd_toStartOf="@+id/btnOpenCancel"
+                    app:layout_constraintEnd_toStartOf="@+id/btnOpenOrderswe"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -124,7 +124,7 @@
                     app:layout_constraintVertical_bias="0.0" />
 
                 <ImageView
-                    android:id="@+id/btnOpenOrders"
+                    android:id="@+id/btnOpenOrderswe"
                     android:layout_width="35dp"
                     android:layout_height="40dp"
 
@@ -141,7 +141,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bnm"
+            android:id="@+id/bnms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 

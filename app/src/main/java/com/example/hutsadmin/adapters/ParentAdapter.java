@@ -94,105 +94,132 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
         holder.recyclerView.setVisibility(isChildVisible[position] ? View.VISIBLE : View.GONE);
 
 
-        holder.btnComplete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    final int clickedPosition = holder.getAdapterPosition();
-
-                    if (clickedPosition != RecyclerView.NO_POSITION) {
-                        OrderData orderData = orderDataArrayList.get(clickedPosition);
-                        orderData.setActive(false);
-
-
-                        databaseReferenceActive.child(orderData.getUserId()).child(orderData.getPushId())
-                                .removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-
-
-                                        databaseReferenceDelivered.child(orderData.getUserId())
-                                                .child(orderData.getPushId())
-                                                .setValue(orderData)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void unused) {
-                                                        orderDataArrayList.remove(clickedPosition); // Remove from local data source
-                                                        notifyItemRemoved(clickedPosition);
-                                                        Toast.makeText(context, "item deleted ", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-
-                                                    }
-                                                });
-
-
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-
-                                    }
-                                });
-
-//
-//                        orderDataArrayList.remove(clickedPosition);
-//                        notifyItemRemoved(clickedPosition);
-                    } else {
-                        Log.e("Adapter", "Invalid position for click event");
-                    }
-                } catch (Exception e) {
-                    Toast.makeText(context, "Error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
 //        holder.btnComplete.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                OrderData orderData = orderDataArrayList.get(position);
+//                final int clickedPosition = holder.getAdapterPosition();
 //
-//                // Mark the order as delivered in the active orders node
-//                databaseReferenceActive.child(orderData.getOrderId()).removeValue()
-//                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                            @Override
-//                            public void onSuccess(Void aVoid) {
-//                                // Add the order to the delivered orders node
-//                                databaseReferenceDelivered.child(orderData.getOrderId()).setValue(orderData)
-//                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                            @Override
-//                                            public void onSuccess(Void aVoid) {
-//                                                // Remove the order from the list
-//                                                orderDataArrayList.remove(position);
-//                                                notifyDataSetChanged();
+//                if (clickedPosition != RecyclerView.NO_POSITION) {
+//                    final OrderData orderData = orderDataArrayList.get(clickedPosition);
+//                    orderData.setActive(false);
 //
-//                                                Toast.makeText(context, "Order delivered", Toast.LENGTH_SHORT).show();
-//                                            }
-//                                        })
-//                                        .addOnFailureListener(new OnFailureListener() {
-//                                            @Override
-//                                            public void onFailure(@NonNull Exception e) {
-//                                                Log.e("ParentAdapter", "Failed to move order to delivered: " + e.getMessage());
-//                                            }
-//                                        });
-//                            }
-//                        })
-//                        .addOnFailureListener(new OnFailureListener() {
-//                            @Override
-//                            public void onFailure(@NonNull Exception e) {
-//                                Log.e("ParentAdapter", "Failed to mark order as delivered: " + e.getMessage());
-//                            }
-//                        });
+//                    databaseReferenceActive.child(orderData.getUserId()).child(orderData.getPushId())
+//                            .removeValue()
+//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                @Override
+//                                public void onSuccess(Void unused) {
+//                                    // Move the item to the delivered section
+//                                    databaseReferenceDelivered.child(orderData.getUserId())
+//                                            .child(orderData.getPushId())
+//                                            .setValue(orderData)
+//                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                @Override
+//                                                public void onSuccess(Void unused) {
+//                                                    // Remove the item locally
+//                                                    orderDataArrayList.remove(clickedPosition);
+//                                                    notifyItemRemoved(clickedPosition);
+//
+//                                                    // Show toast and potentially update the UI
+//
+//                                                    // Now, remove the item from the user's orders
+//                                                    databaseReferenceDelivered.child(orderData.getUserId())
+//                                                            .child(orderData.getPushId())
+//                                                            .removeValue()
+//                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                                                                @Override
+//                                                                public void onSuccess(Void unused) {
+//                                                                    Toast.makeText(context, "Item deleted from user's side", Toast.LENGTH_SHORT).show();
+//                                                                }
+//                                                            })
+//                                                            .addOnFailureListener(new OnFailureListener() {
+//                                                                @Override
+//                                                                public void onFailure(@NonNull Exception e) {
+//                                                                    Toast.makeText(context, "Failed to delete item from user's side: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//                                                                }
+//                                                            });
+//                                                }
+//                                            })
+//                                            .addOnFailureListener(new OnFailureListener() {
+//                                                @Override
+//                                                public void onFailure(@NonNull Exception e) {
+//                                                    Toast.makeText(context, "Error moving item: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//                                                }
+//                                            });
+//                                }
+//                            })
+//                            .addOnFailureListener(new OnFailureListener() {
+//                                @Override
+//                                public void onFailure(@NonNull Exception e) {
+//                                    Toast.makeText(context, "Error deleting item: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+//                } else {
+//                    Log.e("Adapter", "Invalid position for click event");
+//                }
 //            }
 //        });
 
 
+        holder.btnComplete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position1  =holder.getAdapterPosition();
+                orderData.setActive(false);
 
+
+                orderDataArrayList.remove(position1);
+                notifyItemRemoved(position1);
+
+                databaseReferenceActive.child(orderData.getUserId()).child(orderData.getPushId())
+                        .removeValue()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                databaseReferenceDelivered.child(orderData.getUserId())
+                                        .child(orderData.getPushId())
+                                        .setValue(orderData)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+
+
+                                                // Now, remove the item from the user's orders
+                                                databaseReferenceActive.child(orderData.getUserId())
+                                                        .child(orderData.getPushId())
+                                                        .removeValue()
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void unused) {
+                                                                Toast.makeText(context, "Item deleted from user's side", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Toast.makeText(context, "Failed to delete item from user's side: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+
+            }
+        });
 
     }
 

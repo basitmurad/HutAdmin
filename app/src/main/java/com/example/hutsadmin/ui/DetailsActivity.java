@@ -120,4 +120,13 @@ binding.imageView3.setOnClickListener(new View.OnClickListener() {
 });
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (parentAdapter!=null)
+        {
+            parentAdapter.notifyDataSetChanged();
+        }
+    }
 }

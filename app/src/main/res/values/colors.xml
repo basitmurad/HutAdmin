@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="text_color">#258315</color>
     <color name="backButton_color">#FC961E</color>
+    <color name="backBar">#F4B73A</color>
+    <color name="backBarchild">#F6C86B</color>
 </resources>

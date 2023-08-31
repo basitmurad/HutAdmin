@@ -67,7 +67,7 @@ public class DeliveredOrdersFragment extends Fragment {
 
                     }
 
-                    userAdapter = new UserAdapter(getContext(), usersDetailArrayList, 3);
+                    userAdapter = new UserAdapter(requireContext(), usersDetailArrayList, 3);
 
                     recyclerView.setAdapter(userAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
