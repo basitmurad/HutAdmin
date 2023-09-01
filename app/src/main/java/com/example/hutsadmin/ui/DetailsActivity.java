@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,8 +32,10 @@ public class DetailsActivity extends AppCompatActivity {
     private ArrayList<OrderData> activeOrdersList;
     private ArrayList<OrderDetails> orderDetailsArrayList;
     private ParentAdapter parentAdapter;
+    private String  number;
 
     private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +50,12 @@ public class DetailsActivity extends AppCompatActivity {
 
         String userId = getIntent().getStringExtra("userId");
         String name = getIntent().getStringExtra("name");
+         number  = getIntent().getStringExtra("no");
 
         activeOrdersRef = FirebaseDatabase.getInstance().getReference("ActiveOrders").child(userId);
         binding.textView7.setText(name);
         activeOrdersList = new ArrayList<>();
-        orderDetailsArrayList   =new ArrayList<>();
+        orderDetailsArrayList = new ArrayList<>();
 
         activeOrdersRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -93,13 +98,11 @@ public class DetailsActivity extends AppCompatActivity {
 
                     } else {
                         progressDialog.dismiss();
-                        Log.d("Exception" , "error");
+                        Log.d("Exception", "error");
                     }
-                }
-                catch (ArrayIndexOutOfBoundsException e)
-                {
+                } catch (ArrayIndexOutOfBoundsException e) {
                     progressDialog.dismiss();
-                    Log.d("Exception" , "error");
+                    Log.d("Exception", "error");
                     // Toast.makeText(getActivity().getApplicationContext(), " "+e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
                 }
@@ -107,25 +110,34 @@ public class DetailsActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-               progressDialog.dismiss();
-                Log.d("Exception" , "error");
+                progressDialog.dismiss();
+                Log.d("Exception", "error");
             }
         });
 
-binding.imageView3.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        finish();
-    }
-});
+        binding.imageView3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        binding.btnCall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
+                        startActivity(intent);
+                    }
+                });
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (parentAdapter!=null)
-        {
+        if (parentAdapter != null) {
             parentAdapter.notifyDataSetChanged();
         }
     }

@@ -46,5 +46,15 @@
         app:layout_constraintTop_toBottomOf="@+id/tablayout" />
 
 
+    <ImageView
+        android:id="@+id/btnOpenChats"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="24dp"
+
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/baseline_message_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

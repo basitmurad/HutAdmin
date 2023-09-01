@@ -2,9 +2,13 @@ package com.example.hutsadmin.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
+import com.example.hutsadmin.ui.MessegerActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
+import com.example.hutsadmin.MessegeDetailActivity;
 import com.example.hutsadmin.SessionManager;
 import com.example.hutsadmin.databinding.ActivityDashboardBinding;
 import com.example.hutsadmin.fragments.adapters.MyFragmentAdapter;
@@ -55,14 +59,14 @@ public class DashboardActivity extends AppCompatActivity {
 
 
 
+        binding.btnOpenChats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                startActivity(new Intent(DashboardActivity.this, MessegerActivity.class));
 
-
-
-
-
-
-
+            }
+        });
 
 
 

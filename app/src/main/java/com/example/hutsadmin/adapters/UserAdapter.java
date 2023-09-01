@@ -33,6 +33,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
         this.tabIdentifier = tabIdentifier;
     }
 
+
+
     @NonNull
     @Override
     public UserAdapter.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,6 +52,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
         String name = usersDetail.getName();
         holder.textViewName.setText(name);
         String userId  = usersDetail.getUserId();
+        String   no = usersDetail.getNumber();
 //        Toast.makeText(context, ""+name, Toast.LENGTH_SHORT).show();
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +64,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
                     Intent intent = new Intent(context, DetailsActivity.class);
                     intent.putExtra("userId", userId);
                     intent.putExtra("name" , name);
+                    intent.putExtra("no" , no);
                     context.startActivity(intent);
                 }
                 if (tabIdentifier==2)
@@ -68,6 +72,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
                     Intent intent = new Intent(context, CancelOrdersDetailActivity.class);
                     intent.putExtra("userId", userId);
                     intent.putExtra("name" , name);
+
                     context.startActivity(intent);
                 }
                 if (tabIdentifier==3)
@@ -75,10 +80,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
                     Intent intent = new Intent(context, DeliveredOrdersActivity.class);
                     intent.putExtra("userId", userId);
                     intent.putExtra("name" , name);
+                    intent.putExtra("name" , name);
                     context.startActivity(intent);
                 }
             }
         });
+
+
+
 
     }
 
@@ -98,12 +107,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
             textViewName = itemView.findViewById(R.id.textViewName12);
             textViewEmail = itemView.findViewById(R.id.textViewEmail12);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                }
-            });
 
         }
     }

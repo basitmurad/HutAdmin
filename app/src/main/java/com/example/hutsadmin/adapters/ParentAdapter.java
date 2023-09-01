@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.hutsadmin.R;
 import com.example.hutsadmin.models.OrderData;
 import com.example.hutsadmin.models.OrderDetails;
+import com.example.hutsadmin.models.UsersDetail;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -67,6 +68,9 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
         holder.hutName.setText(orderData.getHutName());
         holder.totalPrice.setText("Total Rs. " + String.valueOf(orderData.getTotalPrice()));
 
+        holder.textViewAddress.setText(orderData.getAddress());
+
+
         orderData.getOrderDetailsList();
 
 
@@ -95,70 +99,6 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
 
 
 
-//        holder.btnComplete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final int clickedPosition = holder.getAdapterPosition();
-//
-//                if (clickedPosition != RecyclerView.NO_POSITION) {
-//                    final OrderData orderData = orderDataArrayList.get(clickedPosition);
-//                    orderData.setActive(false);
-//
-//                    databaseReferenceActive.child(orderData.getUserId()).child(orderData.getPushId())
-//                            .removeValue()
-//                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                @Override
-//                                public void onSuccess(Void unused) {
-//                                    // Move the item to the delivered section
-//                                    databaseReferenceDelivered.child(orderData.getUserId())
-//                                            .child(orderData.getPushId())
-//                                            .setValue(orderData)
-//                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                                @Override
-//                                                public void onSuccess(Void unused) {
-//                                                    // Remove the item locally
-//                                                    orderDataArrayList.remove(clickedPosition);
-//                                                    notifyItemRemoved(clickedPosition);
-//
-//                                                    // Show toast and potentially update the UI
-//
-//                                                    // Now, remove the item from the user's orders
-//                                                    databaseReferenceDelivered.child(orderData.getUserId())
-//                                                            .child(orderData.getPushId())
-//                                                            .removeValue()
-//                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                                                                @Override
-//                                                                public void onSuccess(Void unused) {
-//                                                                    Toast.makeText(context, "Item deleted from user's side", Toast.LENGTH_SHORT).show();
-//                                                                }
-//                                                            })
-//                                                            .addOnFailureListener(new OnFailureListener() {
-//                                                                @Override
-//                                                                public void onFailure(@NonNull Exception e) {
-//                                                                    Toast.makeText(context, "Failed to delete item from user's side: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-//                                                                }
-//                                                            });
-//                                                }
-//                                            })
-//                                            .addOnFailureListener(new OnFailureListener() {
-//                                                @Override
-//                                                public void onFailure(@NonNull Exception e) {
-//                                                    Toast.makeText(context, "Error moving item: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-//                                                }
-//                                            });
-//                                }
-//                            })
-//                            .addOnFailureListener(new OnFailureListener() {
-//                                @Override
-//                                public void onFailure(@NonNull Exception e) {
-//                                    Toast.makeText(context, "Error deleting item: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
-//                } else {
-//                    Log.e("Adapter", "Invalid position for click event");
-//                }
-//            }
-//        });
 
 
         holder.btnComplete.setOnClickListener(new View.OnClickListener() {
@@ -230,7 +170,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
 
     public class MyHolder extends RecyclerView.ViewHolder {
 
-        TextView orderId, hutName, totalPrice, btnComplete;
+        TextView orderId, hutName, totalPrice, btnComplete , textViewAddress;
         RecyclerView recyclerView;
         ImageView imageView;
 
@@ -243,6 +183,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
             imageView = itemView.findViewById(R.id.btnOpen);
             btnComplete = itemView.findViewById(R.id.btnCancelOrders);
 
+            textViewAddress = itemView.findViewById(R.id.textAddress);
             recyclerView = itemView.findViewById(R.id.bnm);
         }
     }

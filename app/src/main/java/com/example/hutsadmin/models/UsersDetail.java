@@ -4,15 +4,34 @@ import java.util.ArrayList;
 
 public class UsersDetail {
 
-    private String name, email , userId ;
+    private String name, email , userId , userFcmToken , number;
 
-    public UsersDetail(String name, String email, String userId) {
+
+    public UsersDetail(String name, String email, String userId, String userFcmToken, String number) {
         this.name = name;
         this.email = email;
         this.userId = userId;
+        this.userFcmToken = userFcmToken;
+        this.number = number;
     }
 
     public UsersDetail() {
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getUserFcmToken() {
+        return userFcmToken;
+    }
+
+    public void setUserFcmToken(String userFcmToken) {
+        this.userFcmToken = userFcmToken;
     }
 
     public String getUserId() {

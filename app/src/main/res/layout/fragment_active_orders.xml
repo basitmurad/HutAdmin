@@ -28,6 +28,6 @@
         android:id="@+id/userRecycler"
         android:layout_margin="3dp"
         tools:listitem="@layout/user_layout"
-        android:text="@string/hello_blank_fragment" />
+         />
 
 </LinearLayout>
