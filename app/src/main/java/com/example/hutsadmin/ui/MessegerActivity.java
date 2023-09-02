@@ -6,11 +6,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.hutsadmin.adapters.UserAdapter;
 import com.example.hutsadmin.adapters.UserAdapter2;
 import com.example.hutsadmin.databinding.ActivityMessegerBinding;
+import com.example.hutsadmin.models.ActiveOrderUsers;
 import com.example.hutsadmin.models.UsersDetail;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -90,7 +93,48 @@ public class MessegerActivity extends AppCompatActivity {
             }
         });
 
+        binding.btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        setupSearchView();
 
 
     }
+
+
+    private void setupSearchView() {
+        binding.serachView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterUsers(newText); // Call method to filter users
+                return true;
+            }
+        });
+    }
+
+    private void filterUsers(String query) {
+
+        filteredArraylist.clear();
+        for (UsersDetail user : usersDetailArrayList) {
+            if (user.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredArraylist.add(user);
+            }
+        }
+
+
+userAdapter.setFilteredUsers(filteredArraylist);
+
+
+
+    }
+
 }

@@ -124,7 +124,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
 
-                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
 
                         android:layout_marginBottom="8dp"
@@ -140,47 +139,24 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/textAddress"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:orientation="vertical"
+
+                        android:fontFamily="@font/inter"
+                        android:paddingStart="12dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:text="Address"
+
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/btnCancelOrders"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/btnCancelOrders"
-                        app:layout_constraintTop_toTopOf="@+id/btnCancelOrders">
+                        app:layout_constraintTop_toTopOf="@+id/btnCancelOrders" />
 
-                        <TextView
-
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"
-                            android:fontFamily="@font/inter"
-
-                            android:paddingTop="2dp"
-                            android:paddingBottom="2dp"
-                            android:text="Address "
-
-                            android:textColor="@color/black"
-                            android:textSize="16sp" />
-
-                        <TextView
-                            android:id="@+id/textAddress"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-
-                            android:layout_marginEnd="8dp"
-                            android:fontFamily="@font/inter"
-                            android:paddingStart="12dp"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="4dp"
-                            android:text="Address"
-
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <ImageView
@@ -189,6 +165,7 @@
                     android:layout_width="35dp"
 
                     android:layout_height="40dp"
+                    android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/baseline_navigate_next_24"
                     app:layout_constraintBottom_toBottomOf="@+id/constraintLayout3"

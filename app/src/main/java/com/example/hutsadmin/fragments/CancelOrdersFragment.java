@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.hutsadmin.R;
 import com.example.hutsadmin.adapters.UserAdapter;
+import com.example.hutsadmin.models.ActiveOrderUsers;
 import com.example.hutsadmin.models.UsersDetail;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,10 +30,10 @@ import java.util.ArrayList;
 
 public class CancelOrdersFragment extends Fragment {
     private DatabaseReference databaseReference;
-    private ArrayList<UsersDetail> usersDetailArrayList;
+    private ArrayList<ActiveOrderUsers> usersDetailArrayList;
     private RecyclerView recyclerView;
     private ProgressDialog progressDialog;
-    private ArrayList<UsersDetail> filteredArraylist;
+    private ArrayList<ActiveOrderUsers> filteredArraylist;
     private SearchView searchView;
     private UserAdapter userAdapter;
 
@@ -53,7 +54,7 @@ public class CancelOrdersFragment extends Fragment {
         progressDialog.show();
 
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("UsersDetail");
+        databaseReference = FirebaseDatabase.getInstance().getReference("ActiveOrdersUser");
 
         usersDetailArrayList = new ArrayList<>();
         filteredArraylist = new ArrayList<>();
@@ -63,8 +64,9 @@ public class CancelOrdersFragment extends Fragment {
                 if (snapshot.exists()) {
                     usersDetailArrayList.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        UsersDetail usersDetail = dataSnapshot.getValue(UsersDetail.class);
-                        usersDetailArrayList.add(usersDetail);
+//                        UsersDetail usersDetail = dataSnapshot.getValue(UsersDetail.class);
+                        ActiveOrderUsers activeOrderUsers = dataSnapshot.getValue(ActiveOrderUsers.class);
+                        usersDetailArrayList.add(activeOrderUsers);
 
 
                     }
@@ -114,7 +116,7 @@ public class CancelOrdersFragment extends Fragment {
     private void filterUsers(String query) {
 
         filteredArraylist.clear();
-        for (UsersDetail user : usersDetailArrayList) {
+        for (ActiveOrderUsers user : usersDetailArrayList) {
             if (user.getName().toLowerCase().contains(query.toLowerCase())) {
                 filteredArraylist.add(user);
             }

@@ -111,61 +111,6 @@ public class CancelOrdersDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
-//
-//
-//        cancelOrdersRef = FirebaseDatabase.getInstance().getReference("CancelOrders").child(userId);
-//
-//        cancelOrdersList = new ArrayList<>();
-//
-//        cancelOrdersRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if (snapshot.exists())
-//                {
-//                    cancelOrdersList.clear();
-//
-//
-//                    for (DataSnapshot dataSnapshot : snapshot.getChildren())
-//                    {
-//                        OrderData orderData = dataSnapshot.getValue(OrderData.class);
-//
-//                        cancelOrdersList.add(orderData);
-//                    }
-//
-//
-//                    cancelAdapter = new CancelAdapter(CancelOrdersDetailActivity.this, cancelOrdersList);
-//                    binding.cancelRecycerl.setAdapter(cancelAdapter);
-//                    binding.cancelRecycerl.setLayoutManager(new LinearLayoutManager(CancelOrdersDetailActivity.this));
-//
-//                    int itemCount = cancelOrdersList.size();
-//
-//                    binding.count.setText(String.valueOf(itemCount));
-//                    progressDialog.dismiss();
-//                    progressDialog.dismiss();
-////                    Toast.makeText(CancelOrdersDetailActivity.this, "exist", Toast.LENGTH_SHORT).show();
-//                }
-//                else {
-//
-//                    Toast.makeText(CancelOrdersDetailActivity.this, "No Cancel order ", Toast.LENGTH_SHORT).show();
-//
-//                }
-//
-//                if (cancelOrdersList.isEmpty())
-//                {
-//                    progressDialog.dismiss();
-//                    binding.count.setText("0");
-//                }
-//
-//                // Now you have the list of cancel orders for the user, you can display it
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                // Handle error
-//                Toast.makeText(CancelOrdersDetailActivity.this, "error " +error.getMessage(), Toast.LENGTH_SHORT).show();
-//
-//            }
-//        });
+
     }
 }

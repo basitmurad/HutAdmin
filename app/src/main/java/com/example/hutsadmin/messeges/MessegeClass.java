@@ -13,41 +13,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.example.hutsadmin.MessegeDetailActivity;
 import com.example.hutsadmin.R;
 import com.example.hutsadmin.ui.DashboardActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Random;
-//public class MessegeClass extends FirebaseMessagingService {
 
-//    private static final String TAG = "MyFirebaseMsgService";
-//
-//    @Override
-//    public void onMessageReceived(RemoteMessage remoteMessage) {
-//        Log.d(TAG, "From: " + remoteMessage.getFrom());
-//
-//        if (remoteMessage.getNotification() != null) {
-//            Log.d(TAG, "Notification Message Body: " + remoteMessage.getNotification().getBody());
-//            String title = remoteMessage.getNotification().getTitle();
-//            String message = remoteMessage.getNotification().getBody();
-//            // Handle the notification here, e.g., display a notification to the user
-//            // You can use NotificationCompat.Builder to create and show the notification
-//        }
-//    }
-//
-//    @Override
-//    public void onNewToken(String token) {
-//        Log.d(TAG, "Refreshed token: " + token);
-//        // Save the new FCM token to your server or SharedPreferences
-//    }
-//}
 
 public class MessegeClass extends FirebaseMessagingService {
     private final String CHANNEL_ID="channel_id";
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {
         super.onMessageReceived(message);
+
+
         Intent intent = new Intent(this, DashboardActivity.class);
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
@@ -79,6 +60,21 @@ public class MessegeClass extends FirebaseMessagingService {
         channel.enableLights(true);
         channel.setLightColor(Color.WHITE);
         manager.createNotificationChannel( channel);
+    }
+
+
+    private void openChatActivity() {
+        // Open the ChatActivity or any other activity for messages
+        Intent intent = new Intent(this, MessegeDetailActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
+    private void openOrderActivity() {
+        // Open the OrderActivity or any other activity for orders
+        Intent intent = new Intent(this, DashboardActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }
 

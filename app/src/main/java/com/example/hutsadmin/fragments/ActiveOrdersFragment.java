@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.hutsadmin.R;
 import com.example.hutsadmin.adapters.UserAdapter;
+import com.example.hutsadmin.models.ActiveOrderUsers;
 import com.example.hutsadmin.models.UsersDetail;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,13 +29,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 
-
 public class ActiveOrdersFragment extends Fragment {
 
 
     private DatabaseReference databaseReference;
-    private ArrayList<UsersDetail> usersDetailArrayList;
-    private ArrayList<UsersDetail> filteredArraylist;
+    private ArrayList<ActiveOrderUsers> usersDetailArrayList;
+    private ArrayList<ActiveOrderUsers> filteredArraylist;
     private RecyclerView recyclerView;
     private ProgressDialog progressDialog;
     private SearchView searchView;
@@ -57,21 +57,30 @@ public class ActiveOrdersFragment extends Fragment {
         progressDialog.show();
 
 
-
         usersDetailArrayList = new ArrayList<>();
         filteredArraylist = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference("UsersDetail");
+        databaseReference = FirebaseDatabase.getInstance().getReference("ActiveOrdersUser");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     usersDetailArrayList.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        UsersDetail usersDetail = dataSnapshot.getValue(UsersDetail.class);
-                        usersDetailArrayList.add(usersDetail);
+//                        UsersDetail usersDetail = dataSnapshot.getValue(UsersDetail.class);
+
+
+                        ActiveOrderUsers activeOrderUsers = dataSnapshot.getValue(ActiveOrderUsers.class);
+
+
+                        if (activeOrderUsers.getHasOrder().equals(true)) {
+                            usersDetailArrayList.add(activeOrderUsers);
+
+
+                        }
+
                     }
 
-                     userAdapter = new UserAdapter(requireContext(), usersDetailArrayList, 1);
+                    userAdapter = new UserAdapter(requireContext(), usersDetailArrayList, 1);
 
                     recyclerView.setAdapter(userAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
@@ -119,12 +128,11 @@ public class ActiveOrdersFragment extends Fragment {
     private void filterUsers(String query) {
 
         filteredArraylist.clear();
-        for (UsersDetail user : usersDetailArrayList) {
+        for (ActiveOrderUsers user : usersDetailArrayList) {
             if (user.getName().toLowerCase().contains(query.toLowerCase())) {
                 filteredArraylist.add(user);
             }
         }
-
 
 
         userAdapter.setUsersDetailArrayList(filteredArraylist);

@@ -1,12 +1,15 @@
 package com.example.hutsadmin.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,12 +53,16 @@ public class MessAdapter extends RecyclerView.Adapter<MessAdapter.MyHolder> {
 
         if (messegeDetails.getSenderId().equals(FirebaseAuth.getInstance().getUid()))
         {
-            holder.layout.setBackgroundColor(context.getResources().getColor(R.color.black));
+            holder.layout.setBackground(context.getResources().getDrawable(R.drawable.back_messege));
+
             holder.textView.setTextColor(context.getResources().getColor(R.color.white));
         }
 
         else {
-            holder.layout.setBackgroundColor(context.getResources().getColor(R.color.white));
+            holder.textView.setGravity(Gravity.END);
+            holder.layout.setBackground(context.getResources().getDrawable(R.drawable.back_messegereceicer));
+
+
 
 
         }

@@ -91,6 +91,7 @@ public class DetailsActivity extends AppCompatActivity {
                         parentAdapter = new ParentAdapter(DetailsActivity.this, activeOrdersList);
                         binding.recyclerActive.setAdapter(parentAdapter);
                         parentAdapter.notifyDataSetChanged();
+
                         binding.recyclerActive.setLayoutManager(new LinearLayoutManager(DetailsActivity.this));
 
                         int itemCount = activeOrdersList.size();

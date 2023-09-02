@@ -82,4 +82,10 @@ public class UserAdapter2 extends RecyclerView.Adapter<UserAdapter2.MyHolder> {
             email = itemView.findViewById(R.id.textViewEmail12);
         }
     }
+
+    public void setFilteredUsers(ArrayList<UsersDetail> filteredUsers) {
+        usersDetailArrayList.clear();
+        usersDetailArrayList.addAll(filteredUsers);
+        notifyDataSetChanged();
+    }
 }

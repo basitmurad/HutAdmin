@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +46,7 @@ public class MessegeDetailActivity extends AppCompatActivity {
 
     String token, adminId, userId;
     String messege;
+    String userNumber;
     private ArrayList<MessegeDetails> messegeDetailsArrayList;
     private FirebaseDatabase firebaseDatabase;
     private MessegeAdapter messegeAdapter;
@@ -66,12 +69,12 @@ public class MessegeDetailActivity extends AppCompatActivity {
 
         String idd = getIntent().getStringExtra("id");
         String userToken = getIntent().getStringExtra("token");
-        String userNumber = getIntent().getStringExtra("no");
-        Toast.makeText(this, ""+userNumber, Toast.LENGTH_SHORT).show();
-
-
-//        Toast.makeText(this, "" + userToken, Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, "" + idd, Toast.LENGTH_SHORT).show();
+             userNumber = getIntent().getStringExtra("no");
+//        Toast.makeText(this, ""+userNumber, Toast.LENGTH_SHORT).show();
+//
+//
+////        Toast.makeText(this, "" + userToken, Toast.LENGTH_SHORT).show();
+////        Toast.makeText(this, "" + idd, Toast.LENGTH_SHORT).show();
 
         token = sessionManager.getAdminFcmToken();
 
@@ -156,11 +159,36 @@ public class MessegeDetailActivity extends AppCompatActivity {
 
                             }
                         });
+                binding.btnCall.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
+
+                        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + userNumber));
+                        startActivity(intent);
+                    }
+                });
 
             }
         });
 
+
+        binding.btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        binding.btnCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + userNumber));
+                startActivity(intent);
+            }
+        });
 
     }
 

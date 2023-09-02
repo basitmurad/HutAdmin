@@ -35,7 +35,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
     private ArrayList<OrderData> orderDataArrayList;
     private ArrayList<OrderDetails> orderDetailsArrayList;
     private boolean[] isChildVisible;
-    private DatabaseReference databaseReferenceActive, databaseReferenceCancel,databaseReferenceDelivered;
+    private DatabaseReference databaseReferenceActive, databaseReferenceCancel, databaseReferenceDelivered, refDeleteActiveOrder;
 
     public ParentAdapter(Context context, ArrayList<OrderData> orderDataArrayList) {
         this.context = context;
@@ -45,6 +45,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
         this.databaseReferenceActive = FirebaseDatabase.getInstance().getReference("ActiveOrders");
         this.databaseReferenceCancel = FirebaseDatabase.getInstance().getReference("CancelOrders");
         this.databaseReferenceDelivered = FirebaseDatabase.getInstance().getReference("DeliverdOrders");
+        this.refDeleteActiveOrder = FirebaseDatabase.getInstance().getReference("ActiveOrdersUser");
     }
 
 
@@ -98,13 +99,10 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
         holder.recyclerView.setVisibility(isChildVisible[position] ? View.VISIBLE : View.GONE);
 
 
-
-
-
         holder.btnComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int position1  =holder.getAdapterPosition();
+                int position1 = holder.getAdapterPosition();
                 orderData.setActive(false);
 
 
@@ -131,7 +129,28 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void unused) {
-                                                                Toast.makeText(context, "Item deleted from user's side", Toast.LENGTH_SHORT).show();
+
+
+
+                                                                refDeleteActiveOrder.child(orderData.getUserId())
+                                                                        .child("hasOrder").setValue(false)
+                                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                            @Override
+                                                                            public void onSuccess(Void unused) {
+
+                                                                                notifyDataSetChanged();
+                                                                                Toast.makeText(context, "delete user", Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        })
+                                                                        .addOnFailureListener(new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                Toast.makeText(context, "" +e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+                                                                            }
+                                                                        });
+
+                                                                Toast.makeText(context, "Item delivered", Toast.LENGTH_SHORT).show();
                                                             }
                                                         })
                                                         .addOnFailureListener(new OnFailureListener() {
@@ -170,7 +189,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
 
     public class MyHolder extends RecyclerView.ViewHolder {
 
-        TextView orderId, hutName, totalPrice, btnComplete , textViewAddress;
+        TextView orderId, hutName, totalPrice, btnComplete, textViewAddress;
         RecyclerView recyclerView;
         ImageView imageView;
 
@@ -187,7 +206,6 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
             recyclerView = itemView.findViewById(R.id.bnm);
         }
     }
-
 
 
 }

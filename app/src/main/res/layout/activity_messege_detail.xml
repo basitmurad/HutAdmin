@@ -54,12 +54,13 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <ImageView
-                android:id="@+id/btncart"
+                android:id="@+id/btnCall"
                 android:layout_width="30dp"
 
+                android:src="@drawable/baseline_perm_phone_msg_24"
                 android:layout_height="30dp"
                 android:layout_marginEnd="10dp"
-                android:visibility="invisible"
+
 
                 app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
@@ -135,11 +136,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:background="@drawable/backcart"
             android:fontFamily="@font/inter"
-            android:hint="type messege"
 
+            android:hint="type messege"
             android:paddingStart="18dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
@@ -151,8 +153,8 @@
 
         <ImageView
             android:id="@+id/btnSend"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
 
             android:layout_marginEnd="16dp"
             android:padding="3dp"
