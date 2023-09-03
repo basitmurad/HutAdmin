@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +23,9 @@ import com.example.hutsadmin.adapters.MessegeAdapter;
 import com.example.hutsadmin.databinding.ActivityMessegeDetailBinding;
 import com.example.hutsadmin.databinding.ActivityMessegerBinding;
 import com.example.hutsadmin.models.MessegeDetails;
+import com.example.hutsadmin.ui.MessegerActivity;
+import com.example.hutsadmin.utils.InternetChecker;
+import com.example.hutsadmin.utils.NetworkChanger;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +49,7 @@ public class MessegeDetailActivity extends AppCompatActivity {
     String senderRoom, recieverRoom;
 
     private SessionManager sessionManager;
-
+    private BroadcastReceiver broadcastReceiver;
     String token, adminId, userId;
     String messege;
     String userNumber;
@@ -59,7 +65,8 @@ public class MessegeDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMessegeDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        broadcastReceiver = new NetworkChanger();
+        registerNetworkChangeReceiver();
         databaseReference = FirebaseDatabase.getInstance().getReference("chats");
 
         sessionManager = new SessionManager(this);
@@ -243,4 +250,33 @@ public class MessegeDetailActivity extends AppCompatActivity {
         }
 
     }
+
+
+    protected void onResume() {
+        super.onResume();
+
+        InternetChecker internetChecker = new InternetChecker(MessegeDetailActivity.this);
+        if (!internetChecker.isConnected()) {
+
+            internetChecker.showInternetDialog();
+        }
+    }
+
+    private void registerNetworkChangeReceiver() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver, filter);
+    }
+
+    private void unregisterNetworkChangeReceiver() {
+        if (broadcastReceiver != null) {
+            unregisterReceiver(broadcastReceiver);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChangeReceiver();
+    }
+
 }

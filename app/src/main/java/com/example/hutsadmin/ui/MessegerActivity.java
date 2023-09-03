@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SearchView;
@@ -15,6 +18,8 @@ import com.example.hutsadmin.adapters.UserAdapter2;
 import com.example.hutsadmin.databinding.ActivityMessegerBinding;
 import com.example.hutsadmin.models.ActiveOrderUsers;
 import com.example.hutsadmin.models.UsersDetail;
+import com.example.hutsadmin.utils.InternetChecker;
+import com.example.hutsadmin.utils.NetworkChanger;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,15 +35,12 @@ public class MessegerActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
 
-
-
-
-    private UserAdapter2 userAdapter ;
+    private UserAdapter2 userAdapter;
     private ArrayList<UsersDetail> usersDetailArrayList;
     private ArrayList<UsersDetail> filteredArraylist;
 
     private ProgressDialog progressDialog;
-
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,10 @@ public class MessegerActivity extends AppCompatActivity {
 
         binding = ActivityMessegerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+//
+        broadcastReceiver = new NetworkChanger();
+        registerNetworkChangeReceiver();
+        setupSearchView();
         progressDialog = new ProgressDialog(MessegerActivity.this);
         progressDialog.setMessage("Fetching user.....");
         progressDialog.setTitle("Please wait");
@@ -54,9 +59,10 @@ public class MessegerActivity extends AppCompatActivity {
         progressDialog.show();
 
 
-
         usersDetailArrayList = new ArrayList<>();
         filteredArraylist = new ArrayList<>();
+        usersDetailArrayList.clear();
+        filteredArraylist.clear();
         databaseReference = FirebaseDatabase.getInstance().getReference("UsersDetail");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -69,8 +75,7 @@ public class MessegerActivity extends AppCompatActivity {
                     }
 
 
-
-                    userAdapter = new UserAdapter2(MessegerActivity.this,usersDetailArrayList);
+                    userAdapter = new UserAdapter2(MessegerActivity.this, usersDetailArrayList);
                     binding.messsger.setAdapter(userAdapter);
                     binding.messsger.setLayoutManager(new LinearLayoutManager(MessegerActivity.this));
                     userAdapter.notifyDataSetChanged();
@@ -100,12 +105,9 @@ public class MessegerActivity extends AppCompatActivity {
             }
         });
 
-        setupSearchView();
 
 
     }
-
-
     private void setupSearchView() {
         binding.serachView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -120,21 +122,53 @@ public class MessegerActivity extends AppCompatActivity {
             }
         });
     }
-
     private void filterUsers(String query) {
+        ArrayList<UsersDetail> filteredList = new ArrayList<>();
 
-        filteredArraylist.clear();
         for (UsersDetail user : usersDetailArrayList) {
             if (user.getName().toLowerCase().contains(query.toLowerCase())) {
-                filteredArraylist.add(user);
+                filteredList.add(user);
             }
         }
 
+        if (query.isEmpty()) {
+            // If the query is empty, show all users
+            userAdapter.setFilteredUsers(usersDetailArrayList);
+            userAdapter.notifyDataSetChanged();
+        } else {
+            userAdapter.setFilteredUsers(filteredList);
+            userAdapter.notifyDataSetChanged();
 
-userAdapter.setFilteredUsers(filteredArraylist);
+        }
+    }
 
 
 
+    protected void onResume() {
+        super.onResume();
+
+        InternetChecker internetChecker = new InternetChecker(MessegerActivity.this);
+        if (!internetChecker.isConnected()) {
+
+            internetChecker.showInternetDialog();
+        }
+    }
+
+    private void registerNetworkChangeReceiver() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(broadcastReceiver, filter);
+    }
+
+    private void unregisterNetworkChangeReceiver() {
+        if (broadcastReceiver != null) {
+            unregisterReceiver(broadcastReceiver);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterNetworkChangeReceiver();
     }
 
 }

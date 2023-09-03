@@ -84,8 +84,8 @@ public class UserAdapter2 extends RecyclerView.Adapter<UserAdapter2.MyHolder> {
     }
 
     public void setFilteredUsers(ArrayList<UsersDetail> filteredUsers) {
-        usersDetailArrayList.clear();
-        usersDetailArrayList.addAll(filteredUsers);
+
+        usersDetailArrayList = filteredUsers;
         notifyDataSetChanged();
     }
 }
