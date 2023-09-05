@@ -99,6 +99,8 @@ public class DetailsActivity extends AppCompatActivity {
 
                     } else {
                         progressDialog.dismiss();
+
+                        binding.count.setText("0");
                         Log.d("Exception", "error");
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {

@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class MessegeDetailActivity extends AppCompatActivity {
 
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference ,databaseReference1;
     String senderRoom, recieverRoom;
 
     private SessionManager sessionManager;
@@ -67,6 +67,10 @@ public class MessegeDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         broadcastReceiver = new NetworkChanger();
         registerNetworkChangeReceiver();
+
+        databaseReference1 =FirebaseDatabase.getInstance().getReference("Sender");
+      // Update the "read" status in Firebase
+
         databaseReference = FirebaseDatabase.getInstance().getReference("chats");
 
         sessionManager = new SessionManager(this);
@@ -76,13 +80,9 @@ public class MessegeDetailActivity extends AppCompatActivity {
 
         String idd = getIntent().getStringExtra("id");
         String userToken = getIntent().getStringExtra("token");
-             userNumber = getIntent().getStringExtra("no");
-//        Toast.makeText(this, ""+userNumber, Toast.LENGTH_SHORT).show();
-//
-//
-////        Toast.makeText(this, "" + userToken, Toast.LENGTH_SHORT).show();
-////        Toast.makeText(this, "" + idd, Toast.LENGTH_SHORT).show();
+        userNumber = getIntent().getStringExtra("no");
 
+        databaseReference1.child(idd).child("read").setValue(false);
         token = sessionManager.getAdminFcmToken();
 
         userId = FirebaseAuth.getInstance().getUid();
@@ -93,6 +93,7 @@ public class MessegeDetailActivity extends AppCompatActivity {
         recieverRoom = idd + userId;
 
 
+//        Toast.makeText(this, "" + userToken, Toast.LENGTH_SHORT).show();
         databaseReference.child(senderRoom)
                 .child("messeges").addValueEventListener(new ValueEventListener() {
                     @Override
@@ -131,11 +132,12 @@ public class MessegeDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 messege = binding.editText.getText().toString();
                 Date date = new Date();
+//                long timeStm = date.getTime();
                 String randomKey = firebaseDatabase.getReference().push().getKey();
                 binding.editText.setText("");
 
 
-                MessegeDetails messegeDetails1 = new MessegeDetails(messege, userId, randomKey);
+                MessegeDetails messegeDetails1 = new MessegeDetails(messege, userId, randomKey, date.getTime());
                 databaseReference.child(senderRoom).child("messeges").child(randomKey).setValue(messegeDetails1)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -161,7 +163,7 @@ public class MessegeDetailActivity extends AppCompatActivity {
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MessegeDetailActivity.this, " " +e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MessegeDetailActivity.this, " " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
 
                             }

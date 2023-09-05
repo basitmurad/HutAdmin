@@ -1,5 +1,6 @@
 package com.example.hutsadmin.fragments.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,7 +38,7 @@ public class DeliveredOrdersAdapter extends RecyclerView.Adapter<DeliveredOrders
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DeliveredOrdersAdapter.MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DeliveredOrdersAdapter.MyHolder holder, @SuppressLint("RecyclerView") int position) {
 
         OrderData orderData = orderDataArrayList.get(position);
 

@@ -17,6 +17,7 @@ import com.example.hutsadmin.adapters.UserAdapter;
 import com.example.hutsadmin.adapters.UserAdapter2;
 import com.example.hutsadmin.databinding.ActivityMessegerBinding;
 import com.example.hutsadmin.models.ActiveOrderUsers;
+import com.example.hutsadmin.models.Senders;
 import com.example.hutsadmin.models.UsersDetail;
 import com.example.hutsadmin.utils.InternetChecker;
 import com.example.hutsadmin.utils.NetworkChanger;
@@ -28,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+
+
 public class MessegerActivity extends AppCompatActivity {
 
 
@@ -36,8 +39,8 @@ public class MessegerActivity extends AppCompatActivity {
 
 
     private UserAdapter2 userAdapter;
-    private ArrayList<UsersDetail> usersDetailArrayList;
-    private ArrayList<UsersDetail> filteredArraylist;
+    private ArrayList<Senders> usersDetailArrayList;
+    private ArrayList<Senders> filteredArraylist;
 
     private ProgressDialog progressDialog;
     private BroadcastReceiver broadcastReceiver;
@@ -63,14 +66,15 @@ public class MessegerActivity extends AppCompatActivity {
         filteredArraylist = new ArrayList<>();
         usersDetailArrayList.clear();
         filteredArraylist.clear();
-        databaseReference = FirebaseDatabase.getInstance().getReference("UsersDetail");
+        databaseReference = FirebaseDatabase.getInstance().getReference("Sender");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
+                    progressDialog.dismiss();
                     usersDetailArrayList.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        UsersDetail usersDetail = dataSnapshot.getValue(UsersDetail.class);
+                        Senders usersDetail = dataSnapshot.getValue(Senders.class);
                         usersDetailArrayList.add(usersDetail);
                     }
 
@@ -79,11 +83,12 @@ public class MessegerActivity extends AppCompatActivity {
                     binding.messsger.setAdapter(userAdapter);
                     binding.messsger.setLayoutManager(new LinearLayoutManager(MessegerActivity.this));
                     userAdapter.notifyDataSetChanged();
-                    progressDialog.dismiss();
+
 
 
                 } else {
 
+                    progressDialog.dismiss();
                     Toast.makeText(MessegerActivity.this, "No user", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -92,6 +97,7 @@ public class MessegerActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
 
+                progressDialog.dismiss();
                 Toast.makeText(MessegerActivity.this, "database error" + error.getMessage(), Toast.LENGTH_SHORT).show();
 
 
@@ -123,9 +129,9 @@ public class MessegerActivity extends AppCompatActivity {
         });
     }
     private void filterUsers(String query) {
-        ArrayList<UsersDetail> filteredList = new ArrayList<>();
+        ArrayList<Senders> filteredList = new ArrayList<>();
 
-        for (UsersDetail user : usersDetailArrayList) {
+        for (Senders user : usersDetailArrayList) {
             if (user.getName().toLowerCase().contains(query.toLowerCase())) {
                 filteredList.add(user);
             }

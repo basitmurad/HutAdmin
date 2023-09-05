@@ -1,6 +1,7 @@
 package com.example.hutsadmin.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAssignedNumbers;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hutsadmin.R;
@@ -46,7 +48,7 @@ public class ActiveOrdersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_active_orders, container, false);
-
+        TextView textView = view.findViewById(R.id.noOrders);
         recyclerView = view.findViewById(R.id.userRecycler);
         searchView = view.findViewById(R.id.serachView);
 
@@ -67,30 +69,25 @@ public class ActiveOrdersFragment extends Fragment {
                     usersDetailArrayList.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 //                        UsersDetail usersDetail = dataSnapshot.getValue(UsersDetail.class);
-
-
                         ActiveOrderUsers activeOrderUsers = dataSnapshot.getValue(ActiveOrderUsers.class);
-
-
                         if (activeOrderUsers.getHasOrder().equals(true)) {
                             usersDetailArrayList.add(activeOrderUsers);
-
-
                         }
-
                     }
 
-                    userAdapter = new UserAdapter(requireContext(), usersDetailArrayList, 1);
-
+                    userAdapter = new UserAdapter(getContext(), usersDetailArrayList, 1);
                     recyclerView.setAdapter(userAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
                     userAdapter.notifyDataSetChanged();
                     progressDialog.dismiss();
 
 
                 } else {
 
+                    progressDialog.dismiss();
                     Toast.makeText(getActivity(), "No user", Toast.LENGTH_SHORT).show();
+                    showNoActiveUsersDialog();
+
                 }
             }
 
@@ -98,11 +95,16 @@ public class ActiveOrdersFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
 
 
+                progressDialog.dismiss();
                 Toast.makeText(getActivity(), "database error" + error.getMessage(), Toast.LENGTH_SHORT).show();
 
 
             }
         });
+
+
+
+
 
 
         setupSearchView();
@@ -138,6 +140,13 @@ public class ActiveOrdersFragment extends Fragment {
         userAdapter.setUsersDetailArrayList(filteredArraylist);
 
     }
-
+    private void showNoActiveUsersDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("No Active Users");
+        builder.setMessage("There are currently no active users.");
+        builder.setPositiveButton("OK", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 }

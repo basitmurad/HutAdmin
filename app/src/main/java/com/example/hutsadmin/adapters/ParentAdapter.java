@@ -131,7 +131,6 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
                                                             public void onSuccess(Void unused) {
 
 
-
                                                                 refDeleteActiveOrder.child(orderData.getUserId())
                                                                         .child("hasOrder").setValue(false)
                                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -139,18 +138,18 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
                                                                             public void onSuccess(Void unused) {
 
                                                                                 notifyDataSetChanged();
-                                                                                Toast.makeText(context, "delete user", Toast.LENGTH_SHORT).show();
+                                                                                Toast.makeText(context, "Item delivered", Toast.LENGTH_SHORT).show();
                                                                             }
                                                                         })
                                                                         .addOnFailureListener(new OnFailureListener() {
                                                                             @Override
                                                                             public void onFailure(@NonNull Exception e) {
-                                                                                Toast.makeText(context, "" +e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                                                                                Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
                                                                             }
                                                                         });
 
-                                                                Toast.makeText(context, "Item delivered", Toast.LENGTH_SHORT).show();
+//                                                                Toast.makeText(context, "Item delivered", Toast.LENGTH_SHORT).show();
                                                             }
                                                         })
                                                         .addOnFailureListener(new OnFailureListener() {
