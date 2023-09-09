@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,12 +107,23 @@ public class MessegeDetailActivity extends AppCompatActivity {
                                 messegeDetailsArrayList.add(messegeDetails);
 //                                Toast.makeText(MessegeDetailActivity.this, ""+messegeDetails.getMessege(), Toast.LENGTH_SHORT).show();
                             }
+                            MessegeDetails lastMessage = null;
+                            if (!messegeDetailsArrayList.isEmpty()) {
+                                lastMessage = messegeDetailsArrayList.get(messegeDetailsArrayList.size() - 1);
+                            }
+
+                            // Reverse the ArrayList to display the latest message at the bottom
+                            Collections.reverse(messegeDetailsArrayList);
 
                             messAdapter = new MessAdapter(MessegeDetailActivity.this, messegeDetailsArrayList);
 
                             binding.recyclerMess.setAdapter(messAdapter);
                             binding.recyclerMess.setLayoutManager(new LinearLayoutManager(MessegeDetailActivity.this));
                             messAdapter.notifyDataSetChanged();
+                            if (lastMessage != null) {
+                                final int lastPosition = messegeDetailsArrayList.size() - 1;
+                                binding.recyclerMess.scrollToPosition(lastPosition);
+                            }
 
                         } else {
                             Toast.makeText(MessegeDetailActivity.this, "no data", Toast.LENGTH_SHORT).show();
