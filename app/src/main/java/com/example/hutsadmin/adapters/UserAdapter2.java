@@ -71,6 +71,7 @@ public class UserAdapter2 extends RecyclerView.Adapter<UserAdapter2.MyHolder> {
 
         String userId = usersDetail.getUserId();
         String userToken  = usersDetail.getFcmToken();
+        String userName  =usersDetail.getName();
 
 
 //        Toast.makeText(context, ""+userToken, Toast.LENGTH_SHORT).show();
@@ -80,6 +81,7 @@ public class UserAdapter2 extends RecyclerView.Adapter<UserAdapter2.MyHolder> {
 
 //                isRead[0] = false;
 
+
                 databaseReference.child(userId).child("read").setValue(false); // Update the "read" status in Firebase
 
                 Intent intent = new Intent(context, MessegeDetailActivity.class);
@@ -87,6 +89,7 @@ public class UserAdapter2 extends RecyclerView.Adapter<UserAdapter2.MyHolder> {
                 intent.putExtra("id" , userId);
                 intent.putExtra("token", userToken);
                 intent.putExtra("no", nm);
+                intent.putExtra("name",userName);
 
 
 

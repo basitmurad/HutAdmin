@@ -3,6 +3,7 @@ package com.example.hutsadmin;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -19,11 +20,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hutsadmin.adapters.MessAdapter;
-import com.example.hutsadmin.adapters.MessegeAdapter;
+
 import com.example.hutsadmin.databinding.ActivityMessegeDetailBinding;
-import com.example.hutsadmin.databinding.ActivityMessegerBinding;
+
 import com.example.hutsadmin.models.MessegeDetails;
-import com.example.hutsadmin.ui.MessegerActivity;
+
+import com.example.hutsadmin.models.Senders;
 import com.example.hutsadmin.utils.InternetChecker;
 import com.example.hutsadmin.utils.NetworkChanger;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,24 +41,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MessegeDetailActivity extends AppCompatActivity {
 
-    private DatabaseReference databaseReference ,databaseReference1;
+    private DatabaseReference databaseReference, databaseReference1 , databaseReference2;
     String senderRoom, recieverRoom;
 
     private SessionManager sessionManager;
     private BroadcastReceiver broadcastReceiver;
-    String token, adminId, userId;
+    String token, userId , idd , name;
     String messege;
     String userNumber;
     private ArrayList<MessegeDetails> messegeDetailsArrayList;
     private FirebaseDatabase firebaseDatabase;
-    private MessegeAdapter messegeAdapter;
+
     private MessAdapter messAdapter;
 
     private ActivityMessegeDetailBinding binding;
@@ -69,20 +71,23 @@ public class MessegeDetailActivity extends AppCompatActivity {
         broadcastReceiver = new NetworkChanger();
         registerNetworkChangeReceiver();
 
-        databaseReference1 =FirebaseDatabase.getInstance().getReference("Sender");
-      // Update the "read" status in Firebase
+        databaseReference1 = FirebaseDatabase.getInstance().getReference("Sender");
+        // Update the "read" status in Firebase
 
         databaseReference = FirebaseDatabase.getInstance().getReference("chats");
+        databaseReference2 = FirebaseDatabase.getInstance().getReference("SenderAdmin");
 
         sessionManager = new SessionManager(this);
         firebaseDatabase = FirebaseDatabase.getInstance();
         messegeDetailsArrayList = new ArrayList<>();
 
 
-        String idd = getIntent().getStringExtra("id");
+         idd = getIntent().getStringExtra("id");
         String userToken = getIntent().getStringExtra("token");
         userNumber = getIntent().getStringExtra("no");
 
+
+        binding.textView7.setText(getIntent().getStringExtra("name"));
         databaseReference1.child(idd).child("read").setValue(false);
         token = sessionManager.getAdminFcmToken();
 
@@ -94,49 +99,45 @@ public class MessegeDetailActivity extends AppCompatActivity {
         recieverRoom = idd + userId;
 
 
-//        Toast.makeText(this, "" + userToken, Toast.LENGTH_SHORT).show();
-        databaseReference.child(senderRoom)
-                .child("messeges").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
+   // Update the "read" status in Firebase
 
-                            messegeDetailsArrayList.clear();
-                            for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                                MessegeDetails messegeDetails = dataSnapshot.getValue(MessegeDetails.class);
-                                messegeDetailsArrayList.add(messegeDetails);
-//                                Toast.makeText(MessegeDetailActivity.this, ""+messegeDetails.getMessege(), Toast.LENGTH_SHORT).show();
-                            }
-                            MessegeDetails lastMessage = null;
-                            if (!messegeDetailsArrayList.isEmpty()) {
-                                lastMessage = messegeDetailsArrayList.get(messegeDetailsArrayList.size() - 1);
-                            }
-
-                            // Reverse the ArrayList to display the latest message at the bottom
-                            Collections.reverse(messegeDetailsArrayList);
-
-                            messAdapter = new MessAdapter(MessegeDetailActivity.this, messegeDetailsArrayList);
-
-                            binding.recyclerMess.setAdapter(messAdapter);
-                            binding.recyclerMess.setLayoutManager(new LinearLayoutManager(MessegeDetailActivity.this));
-                            messAdapter.notifyDataSetChanged();
-                            if (lastMessage != null) {
-                                final int lastPosition = messegeDetailsArrayList.size() - 1;
-                                binding.recyclerMess.scrollToPosition(lastPosition);
-                            }
-
-                        } else {
-                            Toast.makeText(MessegeDetailActivity.this, "no data", Toast.LENGTH_SHORT).show();
-                        }
+        databaseReference.child(senderRoom).child("messages").orderByChild("timestamp").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    messegeDetailsArrayList.clear();
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        MessegeDetails messegeDetails = dataSnapshot.getValue(MessegeDetails.class);
+//                                messegeDetailsArrayList.add(messegeDetails);
+                        messegeDetailsArrayList.add(0, messegeDetails);
                     }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
 
-                        Toast.makeText(MessegeDetailActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    messAdapter = new MessAdapter(MessegeDetailActivity.this, messegeDetailsArrayList);
 
-                    }
-                });
+                    binding.recyclerMess.setAdapter(messAdapter);
+
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MessegeDetailActivity.this);
+                    linearLayoutManager.setReverseLayout(true);
+                    binding.recyclerMess.setLayoutManager(linearLayoutManager);
+
+                    messAdapter.notifyDataSetChanged();
+
+                    binding.recyclerMess.smoothScrollToPosition(0);
+
+
+                } else {
+                    Toast.makeText(MessegeDetailActivity.this, "no data", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(MessegeDetailActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
 
         binding.btnSend.setOnClickListener(new View.OnClickListener() {
@@ -146,40 +147,61 @@ public class MessegeDetailActivity extends AppCompatActivity {
                 Date date = new Date();
 //                long timeStm = date.getTime();
                 String randomKey = firebaseDatabase.getReference().push().getKey();
+//                binding.recyclerMess.scrollToPosition(messAdapter.getItemCount() - 1)
+
+                binding.recyclerMess.scrollToPosition(0);
+
+
                 binding.editText.setText("");
 
 
                 MessegeDetails messegeDetails1 = new MessegeDetails(messege, userId, randomKey, date.getTime());
-                databaseReference.child(senderRoom).child("messeges").child(randomKey).setValue(messegeDetails1)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                databaseReference.child(senderRoom).child("messages").child(randomKey).setValue(messegeDetails1).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                        databaseReference.child(recieverRoom).child("messages").child(randomKey).setValue(messegeDetails1).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
 
-                                databaseReference.child(recieverRoom)
-                                        .child("messeges")
-                                        .child(randomKey)
-                                        .setValue(messegeDetails1)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+
+
+
+                                Senders senders = new Senders("Admin" ,userId ,true);
+
+                                databaseReference2.child(userId)
+                                        .setValue(senders).addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-
                                                 onSendNotification(userToken, "Admin ", messege);
-
-                                                Toast.makeText(MessegeDetailActivity.this, "message send", Toast.LENGTH_SHORT).show();
-
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(MessegeDetailActivity.this, "Try again", Toast.LENGTH_SHORT).show();
                                             }
                                         });
 
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MessegeDetailActivity.this, " " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 
+
+
+//                                onSendNotification(userToken, "Admin ", messege);
+
+                                Toast.makeText(MessegeDetailActivity.this, "message send", Toast.LENGTH_SHORT).show();
 
                             }
                         });
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MessegeDetailActivity.this, " " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+
+
+                    }
+                });
                 binding.btnCall.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -232,17 +254,16 @@ public class MessegeDetailActivity extends AppCompatActivity {
             jsonObject1.put("to", token);
 
 
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, jsonObject1,
-                    new com.android.volley.Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, jsonObject1, new com.android.volley.Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
 
-                            //     Toast.makeText(PaymentActivity.this, "notifications send  " + response.toString(), Toast.LENGTH_SHORT).show();
+                    //     Toast.makeText(PaymentActivity.this, "notifications send  " + response.toString(), Toast.LENGTH_SHORT).show();
 
-                            Log.d("Notification", "sent notification");
-                        }
+                    Log.d("Notification", "sent notification");
+                }
 
-                    }, error -> {
+            }, error -> {
 
                 Log.d("Notification", "sent not notification");
                 Toast.makeText(this, "not send " + error.networkResponse, Toast.LENGTH_SHORT).show();
@@ -274,6 +295,9 @@ public class MessegeDetailActivity extends AppCompatActivity {
 
             internetChecker.showInternetDialog();
         }
+
+        databaseReference1.child(idd).child("read").setValue(false);
+
     }
 
     private void registerNetworkChangeReceiver() {
@@ -293,4 +317,11 @@ public class MessegeDetailActivity extends AppCompatActivity {
         unregisterNetworkChangeReceiver();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        databaseReference1.child(idd).child("read").setValue(false);
+
+
+    }
 }

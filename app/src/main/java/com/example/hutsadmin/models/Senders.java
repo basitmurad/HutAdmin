@@ -1,5 +1,7 @@
 package com.example.hutsadmin.models;
 
+import kotlinx.coroutines.channels.Send;
+
 public class Senders {
     private String name, email , userId  , fcmToken , number ;
 
@@ -12,6 +14,15 @@ public class Senders {
 //        this.number = number;
 //    }
 
+
+    public Senders(String name, String userId, boolean isRead)
+    {
+        this.name = name;
+
+        this.userId = userId;
+
+        this.isRead = isRead;
+    }
 
     public Senders(String name, String email, String userId, String fcmToken, String number, boolean isRead) {
         this.name = name;

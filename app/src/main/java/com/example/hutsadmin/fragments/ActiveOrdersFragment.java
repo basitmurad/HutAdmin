@@ -77,7 +77,7 @@ public class ActiveOrdersFragment extends Fragment {
 
                     userAdapter = new UserAdapter(getContext(), usersDetailArrayList, 1);
                     recyclerView.setAdapter(userAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                     userAdapter.notifyDataSetChanged();
                     progressDialog.dismiss();
 
@@ -135,6 +135,7 @@ public class ActiveOrdersFragment extends Fragment {
                 filteredArraylist.add(user);
             }
         }
+
 
 
         userAdapter.setUsersDetailArrayList(filteredArraylist);

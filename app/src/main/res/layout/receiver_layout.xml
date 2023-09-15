@@ -1,49 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
 android:orientation="vertical"
-    android:background="@drawable/back_messege"
+
+
     android:id="@+id/userLayout"
     android:layout_margin="5dp"
 
     >
 
-    <TextView
-        android:id="@+id/userSend"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        android:id="@+id/leftSide"
+        >
+        <TextView
+            android:id="@+id/userSendLeft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
 
-        android:padding="3dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="2dp"
+            android:padding="3dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
 
-        android:text=""
-        android:textColor="@color/black"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/timeLeft"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="12:66"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:padding="1dp"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/userSend"
+            app:layout_constraintEnd_toEndOf="@+id/userSend"
+            app:layout_constraintTop_toBottomOf="@+id/userSend" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="12:66"
-        android:textColor="@color/black"
-        android:textSize="10sp"
-        android:padding="1dp"
-        android:layout_marginBottom="2dp"
-        app:layout_constraintBottom_toBottomOf="@+id/userSend"
-        app:layout_constraintEnd_toEndOf="@+id/userSend"
-        app:layout_constraintTop_toBottomOf="@+id/userSend" />
+        android:orientation="vertical"
+android:layout_alignParentRight="true"
+        android:id="@+id/rightSide"
+        >
+        <TextView
+            android:id="@+id/userSendRight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-</LinearLayout>
+
+            android:padding="3dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="2dp"
+
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/timeRight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="12:66"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:padding="1dp"
+            android:layout_marginBottom="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/userSend"
+            app:layout_constraintEnd_toEndOf="@+id/userSend"
+            app:layout_constraintTop_toBottomOf="@+id/userSend" />
+    </LinearLayout>
+
+
+</RelativeLayout>

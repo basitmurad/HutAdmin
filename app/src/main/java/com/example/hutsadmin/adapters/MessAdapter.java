@@ -1,17 +1,13 @@
 package com.example.hutsadmin.adapters;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hutsadmin.R;
@@ -22,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class MessAdapter extends RecyclerView.Adapter<MessAdapter.MyHolder> {
     private Context context;
@@ -55,30 +50,35 @@ public class MessAdapter extends RecyclerView.Adapter<MessAdapter.MyHolder> {
 
         MessegeDetails messegeDetails = messegeDetailsArrayList.get(position);
 
-        holder.textView.setText(messegeDetails.getMessege());
+        if (messegeDetails.getSenderId().equals(FirebaseAuth.getInstance().getUid()))
+        { holder.layoutRight.setBackground(context.getResources().getDrawable(R.drawable.back_sender));
+            holder.layoutRight.setVisibility(View.VISIBLE);
 
-        Date date = new Date(messegeDetails.getTimestamp());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+            holder.layoutLeft.setVisibility(View.GONE);
+            holder.rightMess.setText(messegeDetails.getMessege());
+            Date date = new Date(messegeDetails.getTimestamp());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
 
         String formattedTime = sdf.format(date);
 
+        holder.rightTime.setText(formattedTime);
 
-
-        holder.time.setText(formattedTime);
-
-
-        if (messegeDetails.getSenderId().equals(FirebaseAuth.getInstance().getUid())) {
-            holder.layout.setBackground(context.getResources().getDrawable(R.drawable.back_messege));
-            holder.time.setGravity(Gravity.END);
-            holder.textView.setTextColor(context.getResources().getColor(R.color.white));
-        } else {
-            holder.layout.setBackground(context.getResources().getDrawable(R.drawable.back_messegereceicer));
-            holder.time.setGravity(Gravity.START);
-            holder.textView.setGravity(Gravity.END);
-
-            holder.textView.setTextColor(context.getResources().getColor(R.color.black));
         }
+        else {
+            holder.layoutLeft.setBackground(context.getResources().getDrawable(R.drawable.back_receiver));
+            holder.layoutLeft.setVisibility(View.VISIBLE);
+            holder.layoutRight.setVisibility(View.GONE);
+            holder.leftmess.setText(messegeDetails.getMessege());
+            Date date = new Date(messegeDetails.getTimestamp());
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+
+            String formattedTime = sdf.format(date);
+
+            holder.leftTime.setText(formattedTime);
+        }
+
     }
 
     @Override
@@ -88,14 +88,19 @@ public class MessAdapter extends RecyclerView.Adapter<MessAdapter.MyHolder> {
 
     public class MyHolder extends RecyclerView.ViewHolder {
 
-        TextView textView , time;
-        LinearLayout layout ;
+        TextView leftmess , leftTime , rightMess, rightTime;
+        LinearLayout layoutLeft,layoutRight ;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
-            textView = itemView.findViewById(R.id.userSend);
-            layout = itemView.findViewById(R.id.userLayout);
-            time = itemView.findViewById(R.id.time);
+            layoutLeft = itemView.findViewById(R.id.leftSide);
+            layoutRight = itemView.findViewById(R.id.rightSide);
+            leftmess = itemView.findViewById(R.id.userSendLeft);
+            leftTime = itemView.findViewById(R.id.timeLeft);
+            rightMess = itemView.findViewById(R.id.userSendRight);
+            rightTime = itemView.findViewById(R.id.timeRight);
+
+
         }
     }
 }

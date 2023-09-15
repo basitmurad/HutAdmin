@@ -1,6 +1,7 @@
 package com.example.hutsadmin.ui;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -64,15 +65,16 @@ public class MessegerActivity extends AppCompatActivity {
 
         usersDetailArrayList = new ArrayList<>();
         filteredArraylist = new ArrayList<>();
-        usersDetailArrayList.clear();
+
         filteredArraylist.clear();
         databaseReference = FirebaseDatabase.getInstance().getReference("Sender");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    progressDialog.dismiss();
                     usersDetailArrayList.clear();
+                    progressDialog.dismiss();
+
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Senders usersDetail = dataSnapshot.getValue(Senders.class);
                         usersDetailArrayList.add(usersDetail);
@@ -89,6 +91,8 @@ public class MessegerActivity extends AppCompatActivity {
                 } else {
 
                     progressDialog.dismiss();
+                    showNoUsersDialog(); // Show the dialog when no users are available
+
                     Toast.makeText(MessegerActivity.this, "No user", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -175,6 +179,14 @@ public class MessegerActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterNetworkChangeReceiver();
+    }
+    private void showNoUsersDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("No Users");
+        builder.setMessage("No chats are available.");
+        builder.setPositiveButton("OK", null); // You can add a listener if needed
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }
