@@ -70,8 +70,11 @@ public class CancelOrdersFragment extends Fragment {
 
 
                     }
-
-                     userAdapter = new UserAdapter(requireContext(), usersDetailArrayList, 2);
+                    if (isAdded()) {
+                        // The fragment is attached, so it's safe to access the context
+                        userAdapter = new UserAdapter(requireContext(), usersDetailArrayList, 2);
+                    }
+//                     userAdapter = new UserAdapter(requireContext(), usersDetailArrayList, 2);
 
                     recyclerView.setAdapter(userAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));

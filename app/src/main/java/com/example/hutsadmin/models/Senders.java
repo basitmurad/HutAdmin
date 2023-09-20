@@ -1,18 +1,13 @@
 package com.example.hutsadmin.models;
 
-import kotlinx.coroutines.channels.Send;
+
 
 public class Senders {
     private String name, email , userId  , fcmToken , number ;
 
     boolean isRead = false;
-//    public Senders(String name, String email, String userId, String fcmToken, String number) {
-//        this.name = name;
-//        this.email = email;
-//        this.userId = userId;
-//        this.fcmToken = fcmToken;
-//        this.number = number;
-//    }
+
+    long timeSender;
 
 
     public Senders(String name, String userId, boolean isRead)
@@ -24,14 +19,7 @@ public class Senders {
         this.isRead = isRead;
     }
 
-    public Senders(String name, String email, String userId, String fcmToken, String number, boolean isRead) {
-        this.name = name;
-        this.email = email;
-        this.userId = userId;
-        this.fcmToken = fcmToken;
-        this.number = number;
-        this.isRead = isRead;
-    }
+
 
     public boolean isRead() {
 
@@ -83,5 +71,13 @@ public class Senders {
 
     public void setFcmToken(String fcmToken) {
         this.fcmToken = fcmToken;
+    }
+
+    public long getTimeSender() {
+        return timeSender;
+    }
+
+    public void setTimeSender(long timeSender) {
+        this.timeSender = timeSender;
     }
 }

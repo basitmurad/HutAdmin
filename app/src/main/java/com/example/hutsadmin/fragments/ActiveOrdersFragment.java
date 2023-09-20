@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,7 @@ public class ActiveOrdersFragment extends Fragment {
         usersDetailArrayList = new ArrayList<>();
         filteredArraylist = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference("ActiveOrdersUser");
+//        databaseReference = FirebaseDatabase.getInstance().getReference("ActiveOrdersUser");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -82,11 +84,13 @@ public class ActiveOrdersFragment extends Fragment {
                     progressDialog.dismiss();
 
 
+
                 } else {
 
                     progressDialog.dismiss();
                     Toast.makeText(getActivity(), "No user", Toast.LENGTH_SHORT).show();
-                    showNoActiveUsersDialog();
+
+//                   showNoActiveUsersDialog();
 
                 }
             }
@@ -101,7 +105,6 @@ public class ActiveOrdersFragment extends Fragment {
 
             }
         });
-
 
 
 
@@ -150,4 +153,30 @@ public class ActiveOrdersFragment extends Fragment {
         dialog.show();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//      new Handler().postDelayed(new Runnable() {
+//          @Override
+//          public void run() {
+//              if (usersDetailArrayList.isEmpty()) {
+//                  // If the list is empty, show a dialog
+//                  showNoActiveUsersDialog();
+//              }
+//          }
+//      },3000);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
 }

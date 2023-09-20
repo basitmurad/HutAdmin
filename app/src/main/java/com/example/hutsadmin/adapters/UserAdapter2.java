@@ -20,8 +20,10 @@ import com.example.hutsadmin.models.UsersDetail;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
+import java.util.Locale;
 
 
 public class UserAdapter2 extends RecyclerView.Adapter<UserAdapter2.MyHolder> {
@@ -40,7 +42,7 @@ public class UserAdapter2 extends RecyclerView.Adapter<UserAdapter2.MyHolder> {
     @Override
     public UserAdapter2.MyHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.user_layout,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.user_layout2,parent,false);
         return new MyHolder(view);
     }
 
@@ -55,6 +57,16 @@ public class UserAdapter2 extends RecyclerView.Adapter<UserAdapter2.MyHolder> {
 
 
         String nm = usersDetail.getNumber();
+        Date date = new Date(usersDetail.getTimeSender());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+
+        String formattedTime = sdf.format(date);
+
+
+        holder.textViewTime.setText(String.valueOf(formattedTime));
+
+//        Toast.makeText(context, "time is"+formattedTime, Toast.LENGTH_SHORT).show();
 
         final boolean[] isRead = {usersDetail.isRead()};
         if (isRead[0] ==true)
@@ -105,14 +117,15 @@ public class UserAdapter2 extends RecyclerView.Adapter<UserAdapter2.MyHolder> {
     }
 
     public class MyHolder extends RecyclerView.ViewHolder {
-        TextView name , email;
+        TextView name , email , textViewTime;
         ImageView imageView;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
-            name = itemView.findViewById(R.id.textViewName12);
-            email = itemView.findViewById(R.id.textViewEmail12);
+            name = itemView.findViewById(R.id.textViewName121);
+            email = itemView.findViewById(R.id.textViewEmail121);
             imageView = itemView.findViewById(R.id.notifcatio);
+            textViewTime = itemView.findViewById(R.id.sendertime);
         }
     }
 
