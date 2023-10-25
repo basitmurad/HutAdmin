@@ -10,15 +10,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hutsadmin.MessegeDetailActivity;
+
 import com.example.hutsadmin.R;
 import com.example.hutsadmin.models.Senders;
-import com.example.hutsadmin.models.UsersDetail;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

@@ -12,15 +12,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.hutsadmin.R;
 import com.example.hutsadmin.models.OrderData;
 import com.example.hutsadmin.models.OrderDetails;
-import com.example.hutsadmin.models.UsersDetail;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
@@ -145,7 +144,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
                                                                                    Toast.makeText(context, "order delivered successfully", Toast.LENGTH_SHORT).show();
                                                                                }
                                                                            })
-                                                                           .addOnFailureListener(new OnFailureListener () {
+                                                                           .addOnFailureListener(new OnFailureListener() {
                                                                                @Override
                                                                                public void onFailure(@NonNull Exception e) {
                                                                                    Toast.makeText(context, "" + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
@@ -204,7 +203,7 @@ public class ParentAdapter extends RecyclerView.Adapter<ParentAdapter.MyHolder> 
             hutName = itemView.findViewById(R.id.hutName);
             totalPrice = itemView.findViewById(R.id.totalPrice);
             imageView = itemView.findViewById(R.id.btnOpen);
-            btnComplete = itemView.findViewById(R.id.btnCancelOrders);
+            btnComplete = itemView.findViewById(R.id.btnComplete);
 
             textViewAddress = itemView.findViewById(R.id.textAddress);
             recyclerView = itemView.findViewById(R.id.bnm);

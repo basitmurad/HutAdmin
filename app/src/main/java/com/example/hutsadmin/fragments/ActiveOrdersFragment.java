@@ -62,8 +62,11 @@ public class ActiveOrdersFragment extends Fragment {
 
         usersDetailArrayList = new ArrayList<>();
         filteredArraylist = new ArrayList<>();
+
         databaseReference = FirebaseDatabase.getInstance().getReference("ActiveOrdersUser");
+
 //        databaseReference = FirebaseDatabase.getInstance().getReference("ActiveOrdersUser");
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -177,6 +180,5 @@ public class ActiveOrdersFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
     }
 }

@@ -36,15 +36,43 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/textViewEmail12"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto"
-                    android:padding="5dp"
-                    android:text="basitmurad@gmail.com"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+               <androidx.constraintlayout.widget.ConstraintLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal"
+                   >
+
+                   <TextView
+                       android:id="@+id/textViewEmail12"
+                       android:layout_width="0dp"
+                       android:layout_height="wrap_content"
+                       android:fontFamily="@font/roboto"
+                       android:padding="5dp"
+
+                       android:text="basitmurad@gmail.com"
+                       android:textColor="@color/black"
+                       android:textSize="16sp"
+                       app:layout_constraintBottom_toBottomOf="parent"
+                       app:layout_constraintEnd_toStartOf="@+id/textViewTime"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintTop_toTopOf="parent" />
+
+                   <TextView
+                       android:id="@+id/textViewTime"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_gravity="end"
+                       android:fontFamily="@font/roboto"
+                       android:padding="5dp"
+
+
+                       android:text="12:56"
+                       android:textColor="@color/black"
+                       android:textSize="16sp"
+                       app:layout_constraintBottom_toBottomOf="@+id/textViewEmail12"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintTop_toTopOf="@+id/textViewEmail12" />
+               </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- Add other UI elements as needed -->
 

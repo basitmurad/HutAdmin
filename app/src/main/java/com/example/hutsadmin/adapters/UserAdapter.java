@@ -18,13 +18,18 @@ import com.example.hutsadmin.models.UsersDetail;
 import com.example.hutsadmin.ui.CancelOrdersDetailActivity;
 import com.example.hutsadmin.ui.DeliveredOrdersActivity;
 import com.example.hutsadmin.ui.DetailsActivity;
+import com.example.hutsadmin.utils.GetDateTime;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
     private Context context;
 //    private ArrayList<UsersDetail> usersDetailArrayList;
     private ArrayList<ActiveOrderUsers> activeOrderUsersArrayList;
+
 
     private int tabIdentifier;
 
@@ -32,14 +37,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
         this.context = context;
         this.activeOrderUsersArrayList = activeOrderUsersArrayList;
         this.tabIdentifier = tabIdentifier;
+
     }
 
 
-//    public UserAdapter(Context context, ArrayList<UsersDetail> usersDetailArrayList, int tabIdentifier) {
-//        this.context = context;
-//        this.usersDetailArrayList = usersDetailArrayList;
-//        this.tabIdentifier = tabIdentifier;
-//    }
 
 
 
@@ -52,25 +53,27 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull UserAdapter.MyHolder holder, int position) {
-//        UsersDetail usersDetail  = usersDetailArrayList.get(position);
 
-//        holder.textViewEmail.setText(usersDetail.getEmail()); // Fix the typo here
-//
-//
-//        String name = usersDetail.getName();
-//        holder.textViewName.setText(name);
-//        String userId  = usersDetail.getUserId();
-//        String   no = usersDetail.getNumber();
 
         ActiveOrderUsers activeOrderUsers = activeOrderUsersArrayList.get(position);
+
+
+
+
 
         String name  = activeOrderUsers.getName();
         holder.textViewName.setText(name);
         holder.textViewEmail.setText(activeOrderUsers.getEmail());
+
+        holder.textviewTime.setText(String.valueOf(activeOrderUsers.getTime()));
+//        Toast.makeText(context, ""+activeOrderUsers.getTime(), Toast.LENGTH_SHORT).show();
         String userId = activeOrderUsers.getUserId();
         String no = activeOrderUsers.getNumber();
 
-//        Toast.makeText(context, ""+name, Toast.LENGTH_SHORT).show();
+
+
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,13 +119,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyHolder> {
     public class MyHolder extends RecyclerView.ViewHolder {
 
         private TextView textViewName ;
-        private TextView textViewEmail;
+        private TextView textViewEmail , textviewTime;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
 
             textViewName = itemView.findViewById(R.id.textViewName12);
             textViewEmail = itemView.findViewById(R.id.textViewEmail12);
+            textviewTime = itemView.findViewById(R.id.textViewTime);
 
 
 

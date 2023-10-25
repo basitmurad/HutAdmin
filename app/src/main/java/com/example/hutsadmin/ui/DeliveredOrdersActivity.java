@@ -16,6 +16,9 @@ import com.example.hutsadmin.fragments.adapters.CancelAdpter;
 import com.example.hutsadmin.fragments.adapters.DeliveredOrdersAdapter;
 import com.example.hutsadmin.models.OrderData;
 import com.example.hutsadmin.models.OrderDetails;
+import com.example.hutsadmin.utils.GetDateTime;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +38,7 @@ public class DeliveredOrdersActivity extends AppCompatActivity {
     private DeliveredOrdersAdapter deliveredOrdersAdapter;
 
     private ProgressDialog progressDialog;
+    private GetDateTime getDateTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +48,8 @@ public class DeliveredOrdersActivity extends AppCompatActivity {
         progressDialog.setMessage("Fetching cancel order ");
         progressDialog.setCancelable(false);
         progressDialog.show();
+
+        getDateTime = new GetDateTime(this);
 
 
         String userId = getIntent().getStringExtra("userId");
@@ -117,5 +123,42 @@ public class DeliveredOrdersActivity extends AppCompatActivity {
             }
         });
 
+        getDateTime.getCurrentDateTime(new GetDateTime.TimeCallBack() {
+            @Override
+            public void getDateTime(String date, String time) {
+
+                String[] timeParts = time.split(":");
+                int hours = Integer.parseInt(timeParts[0]);
+
+
+                if (hours == 2) {
+                    deleteAllChats();
+                }
+
+            }
+        });
+
+
+    }
+
+    private void deleteAllChats() {
+        DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("DeliverdOrders ");
+
+        chatReference.removeValue()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Chats deleted successfully
+                        Toast.makeText(DeliveredOrdersActivity.this, "All Orders deleted", Toast.LENGTH_SHORT).show();
+                        // You can also update your UI or perform any other necessary actions.
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to delete chats
+                        Toast.makeText(DeliveredOrdersActivity.this, "Failed to delete Order", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

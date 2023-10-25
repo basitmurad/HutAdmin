@@ -120,7 +120,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
                     <TextView
-                        android:id="@+id/btnCancelOrders"
+                        android:id="@+id/btnComplete"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
 
@@ -152,9 +152,9 @@
 
                         android:textColor="@color/black"
                         android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/btnCancelOrders"
+                        app:layout_constraintBottom_toBottomOf="@+id/btnComplete"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/btnCancelOrders"
+                        app:layout_constraintStart_toEndOf="@+id/btnComplete"
                         app:layout_constraintTop_toTopOf="@+id/btnCancelOrders" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,17 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HutsAdmin"
         tools:targetApi="31">
-
-        <activity android:name=".MessegeDetailActivity"
+        <activity
+            android:name=".ui.DeliveredOrdersDetailActivity"
             android:exported="false"
-            android:theme="@style/Custom.Theme.Huts"
-            />
+            android:theme="@style/Custom.Theme.Huts"/>
+        <activity
+            android:name=".MessegeDetailActivity"
+            android:exported="false"
+            android:theme="@style/Custom.Theme.Huts" />
         <activity
             android:name=".ui.MessegerActivity"
             android:exported="false"
-            android:theme="@style/Custom.Theme.Huts"
-
-            />
+            android:theme="@style/Custom.Theme.Huts" />
         <activity
             android:name=".ui.DeliveredOrdersActivity"
             android:exported="false"

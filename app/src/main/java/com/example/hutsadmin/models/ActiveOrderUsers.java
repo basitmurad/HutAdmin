@@ -1,27 +1,21 @@
 package com.example.hutsadmin.models;
 
 public class ActiveOrderUsers {
-
     String name , email , number ,userId;
     Boolean hasOrder = false;
+    String time;
+
 
     public ActiveOrderUsers() {
     }
 
-    public ActiveOrderUsers(String name, String email, String number, String userId, Boolean hasOrder) {
+    public ActiveOrderUsers(String name, String email, String number, String userId, Boolean hasOrder, String time) {
         this.name = name;
         this.email = email;
         this.number = number;
         this.userId = userId;
         this.hasOrder = hasOrder;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+        this.time = time;
     }
 
     public String getName() {
@@ -48,11 +42,27 @@ public class ActiveOrderUsers {
         this.number = number;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public Boolean getHasOrder() {
         return hasOrder;
     }
 
     public void setHasOrder(Boolean hasOrder) {
         this.hasOrder = hasOrder;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

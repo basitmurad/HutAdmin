@@ -49,7 +49,7 @@
             android:fontFamily="@font/inter"
             android:padding="6dp"
 
-            android:text="User Name"
+            android:text="Email"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="@+id/textView3"
@@ -66,7 +66,7 @@
             android:drawableEnd="@drawable/baseline_person_24"
 
             android:fontFamily="@font/inter"
-            android:hint="Enter your User/Email"
+            android:hint="Enter your Email"
             android:inputType="textEmailAddress"
             android:paddingStart="20dp"
             android:paddingTop="10dp"

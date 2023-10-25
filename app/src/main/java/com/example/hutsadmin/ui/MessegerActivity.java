@@ -20,8 +20,11 @@ import com.example.hutsadmin.databinding.ActivityMessegerBinding;
 import com.example.hutsadmin.models.ActiveOrderUsers;
 import com.example.hutsadmin.models.Senders;
 import com.example.hutsadmin.models.UsersDetail;
+import com.example.hutsadmin.utils.GetDateTime;
 import com.example.hutsadmin.utils.InternetChecker;
 import com.example.hutsadmin.utils.NetworkChanger;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +32,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-
 
 
 public class MessegerActivity extends AppCompatActivity {
@@ -46,12 +48,18 @@ public class MessegerActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private BroadcastReceiver broadcastReceiver;
 
+    private GetDateTime getDateTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMessegerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+
+        getDateTime = new GetDateTime(this);
+
 //
         broadcastReceiver = new NetworkChanger();
         registerNetworkChangeReceiver();
@@ -87,7 +95,6 @@ public class MessegerActivity extends AppCompatActivity {
                     userAdapter.notifyDataSetChanged();
 
 
-
                 } else {
 
                     progressDialog.dismiss();
@@ -115,9 +122,23 @@ public class MessegerActivity extends AppCompatActivity {
             }
         });
 
+        getDateTime.getCurrentDateTime(new GetDateTime.TimeCallBack() {
+            @Override
+            public void getDateTime(String date, String time) {
 
+                String[] timeParts = time.split(":");
+                int hours = Integer.parseInt(timeParts[0]);
+
+
+                if (hours == 2) {
+                    deleteAllChats();
+                }
+
+            }
+        });
 
     }
+
     private void setupSearchView() {
         binding.serachView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -132,6 +153,7 @@ public class MessegerActivity extends AppCompatActivity {
             }
         });
     }
+
     private void filterUsers(String query) {
         ArrayList<Senders> filteredList = new ArrayList<>();
 
@@ -151,7 +173,6 @@ public class MessegerActivity extends AppCompatActivity {
 
         }
     }
-
 
 
     protected void onResume() {
@@ -180,6 +201,7 @@ public class MessegerActivity extends AppCompatActivity {
         super.onDestroy();
         unregisterNetworkChangeReceiver();
     }
+
     private void showNoUsersDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("No Users");
@@ -187,6 +209,27 @@ public class MessegerActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", null); // You can add a listener if needed
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void deleteAllChats() {
+        DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("Sender");
+
+        chatReference.removeValue()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Chats deleted successfully
+                        Toast.makeText(MessegerActivity.this, "All chats deleted", Toast.LENGTH_SHORT).show();
+                        // You can also update your UI or perform any other necessary actions.
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed to delete chats
+                        Toast.makeText(MessegerActivity.this, "Failed to delete chats", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 }
