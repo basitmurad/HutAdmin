@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/nav_myorddersUser"
+
+
+        android:icon="@drawable/baseline_person_24"
+        android:title="Clear Users"
+
+
+        />
+    <item
+        android:id="@+id/nav_chats"
+
+
+        android:icon="@drawable/baseline_message_24"
+        android:title="Clear Chats"
+
+
+        />
+
+    <item
+        android:id="@+id/nav_DeliveredOrder"
+
+
+        android:icon="@drawable/orders"
+        android:title="Clear Delivered Orders"
+
+
+        />
+
+
+    <item
+        android:id="@+id/nav_LatestOrder"
+
+
+        android:icon="@drawable/orders"
+        android:title="Clear Latest Orders"
+
+
+        />
+
+    <item
+        android:id="@+id/nav_CancelOrder"
+
+
+        android:icon="@drawable/orders"
+        android:title="Clear Cancel Orders"
+
+
+        />
+    <item
+        android:id="@+id/nav_Senders"
+
+        android:icon="@drawable/baseline_person_24"
+        android:title="Clear Senders"
+
+
+        />
+
+</menu>
