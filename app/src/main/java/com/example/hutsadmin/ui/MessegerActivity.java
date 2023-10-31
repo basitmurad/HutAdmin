@@ -123,7 +123,6 @@ public class MessegerActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     private void setupSearchView() {
@@ -190,7 +189,7 @@ public class MessegerActivity extends AppCompatActivity {
     }
 
     private void showNoUsersDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getApplicationContext()); // Change this line
         builder.setTitle("No Users");
         builder.setMessage("No chats are available.");
         builder.setPositiveButton("OK", null); // You can add a listener if needed
