@@ -122,20 +122,7 @@ public class MessegerActivity extends AppCompatActivity {
             }
         });
 
-        getDateTime.getCurrentDateTime(new GetDateTime.TimeCallBack() {
-            @Override
-            public void getDateTime(String date, String time) {
 
-                String[] timeParts = time.split(":");
-                int hours = Integer.parseInt(timeParts[0]);
-
-
-                if (hours == 2) {
-                    deleteAllChats();
-                }
-
-            }
-        });
 
     }
 
@@ -211,25 +198,6 @@ public class MessegerActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void deleteAllChats() {
-        DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("Sender");
 
-        chatReference.removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Chats deleted successfully
-                        Toast.makeText(MessegerActivity.this, "All chats deleted", Toast.LENGTH_SHORT).show();
-                        // You can also update your UI or perform any other necessary actions.
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Failed to delete chats
-                        Toast.makeText(MessegerActivity.this, "Failed to delete chats", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
 }

@@ -91,7 +91,7 @@ public class ActiveOrdersFragment extends Fragment {
                 } else {
 
                     progressDialog.dismiss();
-                    Toast.makeText(getActivity(), "No user", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getActivity(), "No user", Toast.LENGTH_SHORT).show();
 
 //                   showNoActiveUsersDialog();
 

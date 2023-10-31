@@ -119,42 +119,10 @@ public class CancelOrdersDetailActivity extends AppCompatActivity {
             }
         });
 
-        getDateTime.getCurrentDateTime(new GetDateTime.TimeCallBack() {
-            @Override
-            public void getDateTime(String date, String time) {
 
-                String[] timeParts = time.split(":");
-                int hours = Integer.parseInt(timeParts[0]);
-
-
-                if (hours == 2) {
-                    deleteAllChats();
-                }
-
-            }
-        });
 
     }
 
-    private void deleteAllChats() {
-        DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("CancelOrders ");
 
-        chatReference.removeValue()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Chats deleted successfully
-                        Toast.makeText(CancelOrdersDetailActivity.this, "All Order deleted", Toast.LENGTH_SHORT).show();
-                        // You can also update your UI or perform any other necessary actions.
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Failed to delete chats
-                        Toast.makeText(CancelOrdersDetailActivity.this, "Failed to delete Order", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
 
 }
